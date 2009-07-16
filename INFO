@@ -1,0 +1,14 @@
+:name: sinatra-mapping
+:summary:
+  Sinatra mapping extension for web application.
+:description:
+  Sinatra mapping extension is a minimal module that is useful for create
+  map names for Sinatra web application.
+:authors:
+  - Hallison Batista
+:email: email@hallisonbatista.com
+:homepage: http://sinatra-mapping.rubyforge.org/
+:dependencies:
+  rack: >= 1.0.0
+  sinatra: >= 0.9.2
+

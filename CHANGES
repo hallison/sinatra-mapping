@@ -1,0 +1,8 @@
+= Changes
+
+[0.1.0 - July 2009]
+  * This version has been extracted from
+    {Postview}[http://postview.rubyforge.org] project.
+
+  * Add first methods for build maps in base application.
+

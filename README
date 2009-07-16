@@ -1,0 +1,74 @@
+= Sinatra Mapping - Map easily URLs paths
+
+{Sinatra}[http://www.sinatrarb.com]
+{mapping extension}[http://sinatra-mapping.rubyforge.org] is a minimal
+module that is useful for create map names for Sinatra web application.
+
+Install stable version gem:
+
+  gem install sinatra-mapping
+
+Or, install development version gem:
+
+  gem install sinatra-mapping --source http://gems.github.com
+
+== Getting start
+
+Use extension using registered method in main source of application.
+Example:
+
+  require 'sinatra'
+  require 'sinatra/mapping'
+
+  class BlogAppication < Sinatra::Base
+
+    register Sinatra::Mapping
+
+    map :root,    "blog"              # => /blog/
+    map :posts,   "articles"          # => /blog/articles
+    map :tags,    "labels"            # => /blog/labels
+    map :archive, "archived-articles" # => /blog/archived-articles
+
+    get root_path do
+      # /blog/
+      # do something for root path.
+    end
+
+    get posts_path do
+      # /blog/articles
+      # do something for posts path.
+    end
+
+    get posts_path(":year/:month/:day/:permalink") do |year, month, day, permalink|
+      # /blog/articles/2009/10/08/permalink-for-your-article
+      # do something for posts path using parameters for find a post.
+    end
+
+    get tags_path do
+      # /blog/labels
+      # do something for tags path.
+    end
+
+    get archive_path do
+      # do something for archive path.
+    end
+
+    get archive_path(":year/:month/:day/:permalink") do |year, month, day, permalink|
+      # /blog/archived-articles/1978/10/08/permalink-for-your-article
+      # do something for archive path using parameters for find a post.
+    end
+
+  end
+
+Easy!!!
+
+== More informations
+
+* See the {changes}[:link:CHANGES.html] for understand the goals of
+  that release version.
+* {License}[:link:LICENSE.html]
+
+== Copyright
+
+Copyright (c) 2009 Hallison Batista
+
