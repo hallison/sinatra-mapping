@@ -1,0 +1,113 @@
+* {
+  font-family: sans-serif;
+}
+
+body {
+  width: 760px;
+  padding: 0px;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333;
+}
+
+a {
+  color: #000;
+  text-decoration: none;
+}
+
+a:hover {
+  text-shadow: #AAA 1px 1px 1px;
+}
+
+a.out {
+  background: transparent url(/images/link-out.gif) no-repeat scroll right center;
+  padding-right: 12px;
+}
+
+pre, tt, code {
+  font-family: monospace;
+  font-size: inherit;
+}
+
+pre {
+  background: #EEE none repeat scroll 0 0;
+  border: 2px solid #AAA;
+}
+
+dt {
+  margin-top: 16px;
+}
+
+dd {
+  margin-left: 20px;
+}
+
+ul {
+  padding-left: 20px;
+}
+
+h1 {
+  font-size: 20px;
+  border-bottom: 1px dotted #333;
+}
+
+#header {
+  margin: 0px;
+  padding: 0px;
+  border-bottom: 2px solid #999;
+}
+
+#header h1 {
+  margin: 0px;
+  padding: 0px;
+  font-family: 'georgia','bitstream vera serif',serif;
+  font-size: 64px;
+  font-weight: normal;
+  line-height: 1;
+  color: #000;
+  text-align: center;
+  border: none;
+}
+
+#header h1 a {
+  font-family: inherit;
+  text-decoration: none;
+  text-shadow: #999 3px 1px 3px;
+}
+
+#header img {
+  padding: 0 15px 0 0;
+  border: 0 none;
+  vertical-align: middle;
+}
+
+#header address {
+  text-align: center;
+  font-style: normal;
+}
+
+#header address a {
+  margin: 2px 18px;
+  text-transform: uppercase;
+}
+
+#content {
+  margin: 7px 4px;
+  text-align: justify;
+}
+
+.float-box {
+  margin: 2px 4px;
+  float: left;
+  width: 370px;
+}
+
+#footer {
+  clear: both;
+  text-align: center;
+  border-top: 2px solid #999;
+}
+
+.loading {
+  text-align: center;
+}

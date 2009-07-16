@@ -1,0 +1,312 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang='en' xml:lang='en' xmlns='http://www.w3.org/1999/xhtml'>
+
+<head>
+  <meta http-equiv='content-type' content='text/html; charset=utf-8' />
+  <meta name='description' content='Wappit - Web templates for your application' />
+  <meta name='keywords' content='ruby, sinatra, routes, rest, webdesign' />
+  <title>Sinatra::Mapping - Map routes in Sinatra Web applications</title>
+  <link href='/stylesheets/default.css' type='text/css' rel='stylesheet' />
+  <script src="/javascripts/jquery.js" type="text/javascript" charset="utf-8"></script>
+  <script src="/javascripts/jquery.github.js" type="text/javascript" charset="utf-8"></script>
+</head>
+
+<body>
+
+  <div id="header">
+    <h1>
+      <img src="/images/sinatra.png" alt="Sinatra::Mapping" /><a href="/">Sinatra::Mapping</a>
+    </h1>
+    <address>
+      <a href="/">Home</a>
+      <a href="http://github.com/hallison/sinatra-mapping" class="out">Repository</a>
+      <a href="http://rubyforge.org/projects/sinatra-mapping">Project</a>
+      <a href="/doc/api/">API Documentation</a>
+      <a href="http://github.com/hallison/sinatra-mapping/issues" class="out">Issues</a>
+    </address>
+    <a href="http://github.com/hallison/sinatra-mapping/tree/master"><img alt="Fork me on GitHub" src="http://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" style="border:0pt none;padding:0pt;position:absolute;top:0pt;right:0pt;"
+    /></a>
+  </div><!-- #header -->
+
+  <script type="text/javascript">
+    <!-- google_ad_client = "pub-3562557895983893"; /* Ruby projects */
+         google_ad_slot   = "3647749501";
+         google_ad_width  = 468;
+         google_ad_height = 15;
+    //-->
+  </script>
+
+  <script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"></script>
+
+  <div id="content">
+    <p>
+      Map easily URLs in your Web applications. The extension <a href="/doc/api/Sinatra/Mapping.html">Sinatra::Mapping</a>
+      is a minimal module that is useful for create route map names for <a href="http://www.ruby-lang.org/" class="out">Ruby</a>
+      <a href="http://www.sinatrarb.com/" class="out">Sinatra</a> web applications.
+    </p>
+
+    <h1>Getting start</h1>
+
+    <p>
+      Install <a href="http://rubyforge.org/frs/?group_id=8727" class="out">stable version gem</a> from
+      <a href="http://rubyforge.org/" class="out">RubyForge.org</a>:
+    </p>
+
+    <pre>
+
+      gem install sinatra-mapping
+    </pre>
+
+    <p>
+      Or, install development version gem from <a href="http://github.com/hallison/sinatra-mapping/" class="out">GitHub.com</a>:
+    </p>
+
+    <pre>
+
+      gem install hallison-sinatra-mapping --source http://gems.github.com
+    </pre>
+
+    <!--
+    <h2>How to use</h2>
+
+    <p>
+      <a href="/doc/api/Sinatra.html">Sinatra</a> implements REST routes:
+    </p>
+
+    <pre>
+
+      get '/' do
+        .. show something ..
+      end
+
+      post '/' do
+        .. create something ..
+      end
+
+      put '/' do
+        .. update something ..
+      end
+
+      delete '/' do
+        .. annihilate something ..
+      end
+    </pre>
+
+    <p>
+      For improve this routes use extension by registered method in the main
+      source of application. To better understand, copy and paste the following
+      example in <a href="http://www.ruby-lang.org" class="out">Ruby</a>
+      source file <tt>webfoo.rb</tt>:
+    </p>
+
+    <pre>
+
+      #!/usr/bin/env ruby
+
+      require 'rubygems'
+      require 'sinatra'
+      require 'sinatra/mapping'
+      require 'sinatra/mapping_helpers'
+
+      class Sinatra::Application
+
+        register Sinatra::Mapping
+        helpers  Sinatra::MappingHelpers
+
+        map :root,    "blog"    # /blog/
+        map :entries, "posts"   # /blog/posts
+        map :tags,    "labels"  # /blog/labels
+
+        mapping :entry          =&gt; "posts/:entry_id",           # /blog/posts/id-for-post
+                :entry_comments =&gt; "posts/:entry_id/comments",  # /blog/posts/id-for-post/comments
+                :tagged_entries =&gt; "labels/:tag_id/entries"     # /blog/labels/id-for-tag/entries
+
+        # /blog/
+        get root_path do
+          &lt;&lt;-end_content
+            &lt;h1&gt;Welcome to Foo Web Application&lt;/h1&gt;
+            &lt;ul&gt;
+
+              &lt;li&gt;#{link_to title_path(:entries), :entries, :title =&gt; title_path(:entries)}&lt;/li&gt;
+              &lt;li&gt;#{link_to title_path(:tags),    :tags,    :title =&gt; title_path(:tags)}&lt;/li&gt;
+            &lt;/ul&gt;
+
+          end_content
+        end
+
+        # /blog/entries
+        get entries_path do
+          &lt;&lt;-end_content
+            &lt;h1&gt;Welcome to Foo Web Application&lt;/h1&gt;
+            &lt;h2&gt;#{title_path(:entries)}&lt;/h2&gt;
+            &lt;ul&gt;
+              &lt;li&gt;#{link_to "Testing new entry ...", :entries, "testing-new-entry"}&lt;/li&gt;
+
+              &lt;li&gt;#{link_to "Testing old entry ...", :entries, "testing-old-entry"}&lt;/li&gt;
+            &lt;/ul&gt;
+            &lt;p&gt;
+              #{link_to "Back", :root}
+            &lt;/p&gt;
+          end_content
+        end
+
+        # /blog/labels/tag-id-for-show-content
+        get tags_path do
+          &lt;&lt;-end_content
+            &lt;h1&gt;Welcome to Foo Web Application&lt;/h1&gt;
+
+            &lt;h2&gt;#{title_path(:tags)}&lt;/h2&gt;
+            &lt;ul&gt;
+              &lt;li&gt;#{link_to "Ruby",    :tags, "ruby",    "entries"}&lt;/li&gt;
+              &lt;li&gt;#{link_to "Sinatra", :tags, "sinatra", "entries"}&lt;/li&gt;
+
+              &lt;li&gt;#{link_to "Mapping", :tags, "mapping", "entries"}&lt;/li&gt;
+            &lt;/ul&gt;
+            &lt;p&gt;
+              #{link_to "Back", :root}
+            &lt;/p&gt;
+          end_content
+        end
+
+        # /blog/entries/entry-id-for-show-content
+        get entry_path do |entry_id|
+          title = entry_id.gsub('-',' ').capitalize
+          &lt;&lt;-end_content
+            &lt;h1&gt;Welcome to Foo Web Application&lt;/h1&gt;
+
+            &lt;h2&gt;#{title}&lt;/h2&gt;
+            &lt;p&gt;
+              It works!
+            &lt;/p&gt;
+            &lt;p&gt;
+              #{link_to "Back", :root} | #{link_to "Comments", :entries, entry_id, 'comments'}
+            &lt;/p&gt;
+
+          end_content
+        end
+
+        # /blog/entries/entry-id-for-show-content/comments
+        get entry_comments_path do |entry_id|
+          title = entry_id.gsub('-',' ').capitalize
+          &lt;&lt;-end_content
+            &lt;h1&gt;Welcome to Foo Web Application&lt;/h1&gt;
+            &lt;h2&gt;#{title}&lt;/h2&gt;
+            &lt;p&gt;
+              It works and show comments for "#{title}".
+            &lt;/p&gt;
+
+            &lt;p&gt;
+              #{link_to "Back", :root}
+            &lt;/p&gt;
+          end_content
+        end
+
+        get tagged_entries_path do |tag_id|
+          &lt;&lt;-end_content
+            &lt;h1&gt;Welcome to Foo Web Application&lt;/h1&gt;
+            &lt;h2&gt;#{tag_id.capitalize}&lt;/h2&gt;
+
+            &lt;p&gt;
+              It works and show all entries tagged with "#{tag_id}".
+            &lt;/p&gt;
+            &lt;p&gt;
+              #{link_to "Back", :root}
+            &lt;/p&gt;
+          end_content
+        end
+
+      end
+    </pre>
+
+    <p>
+      Run:
+      </p>
+
+    <pre>
+
+      $ ruby webfoo.rb -p 3000
+    </pre>
+
+    <p>
+      Open Web browser <a bitly="BITLY_PROCESSED" href="http://localhost:3000/blog/">localhost:3000/blog/</a> and
+      look ... works!
+    </p>
+  //-->
+  </div><!-- #content -->
+
+  <div class="float-box">
+
+    <h1>
+      Latest News
+      <small>(<a href="http://github.com/hallison/sinatra-mapping/commits/master" class="out">more</a>)</small>
+    </h1>
+
+    <div id="news">
+      <p class="loading">
+        <img src="/images/loading.gif" alt="Loading ..."/>
+      </p>
+    </div><!-- #news -->
+
+    <script type="text/javascript" charset="utf-8">
+      $.githubCommits("hallison", "sinatra-mapping", "master", function(data) {
+        var commits = data.commits;
+        $('#news').html('');
+        text = '<dl>';
+        $(commits.slice(0,3)).each(function() {
+          var subject = this.message.split('\n\n', 1);
+          var itens   = this.message.replace(subject+'\n\n', '').split('\n');
+          text = text + '<dt><b><a href="'+this.url+'">'+subject+'</a></b><br/>'
+          var committed_date = this.committed_date.replace(/(\d{4})-(\d{2})-(\d{2})T(.*?)(-.*?)/,'$1/$2/$3 $4 $5');
+          text = text + '<small>By '+this.author.name+' at '+committed_date+'</small></dt>';
+          text = text + '<dd>\n<ul>';
+          $(itens).each(function(){
+            text = text + '<li><p>'+this.replace('*','')+'</p></li>';
+          });
+          text = text + '</ul>\n</dd>';
+        });
+        $('#news').append(text + '</dl>');
+      });
+    </script>
+
+  </div><!-- .float-box#news -->
+
+  <div class="float-box">
+
+    <h1>
+      Latest Issues
+      <small>(<a href="http://github.com/hallison/sinatra-mapping/issues" class="out">more</a>)</small>
+    </h1>
+
+
+    <div id="issues">
+      <p class="loading">
+        <img src="/images/loading.gif" alt="Loading ..."/>
+      </p>
+    </div><!-- #issues -->
+
+    <script type="text/javascript" charset="utf-8">
+      $.githubIssues("hallison", "sinatra-mapping", "open", function(data) {
+        var issues = data.issues;
+        $('#issues').html('');
+        text = '<dl>';
+        $(issues).each(function() {
+          text = text + '<dt><b>'+this.title+'</b><br/>'
+          text = text + '<small>Created at '+this.created_at+'</small></dt>';
+          text = text + '<dd>'+this.body+'</dd>';
+        });
+        $('#issues').append(text + '</dl>');
+      });
+    </script>
+
+  </div><!-- .float-box#issues -->
+
+  <div id="footer">
+    <p>
+      <small><a href="/">Sinatra::Mapping</a> - <a href="http://hallisonbatista.com/">Copyright &copy; 2009 Hallison Batista</a></small>
+    </p>
+  </div><!-- #footer -->
+
+</body>
+
+</html>
+

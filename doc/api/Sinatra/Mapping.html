@@ -1,0 +1,549 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+
+	<title>Module: Sinatra::Mapping</title>
+
+	<link rel="stylesheet" href="../rdoc.css" type="text/css" media="screen" />
+
+	<script src="../js/jquery.js" type="text/javascript"
+		charset="utf-8"></script>
+	<script src="../js/thickbox-compressed.js" type="text/javascript"
+		charset="utf-8"></script>
+	<script src="../js/quicksearch.js" type="text/javascript"
+		charset="utf-8"></script>
+	<script src="../js/darkfish.js" type="text/javascript"
+		charset="utf-8"></script>
+
+</head>
+<body class="module">
+
+	<div id="metadata">
+		<div id="file-metadata">
+			<div id="file-list-section" class="section">
+				<h3 class="section-header">In Files</h3>
+				<div class="section-body">
+					<ul>
+					
+						<li><a href="../lib/sinatra/mapping_rb.html?TB_iframe=true&amp;height=550&amp;width=785"
+							class="thickbox" title="lib/sinatra/mapping.rb">lib/sinatra/mapping.rb</a></li>
+					
+					</ul>
+				</div>
+			</div>
+
+			
+		</div>
+
+		<div id="class-metadata">
+
+			<!-- Parent Class -->
+			
+
+			<!-- Namespace Contents -->
+			
+			<div id="namespace-list-section" class="section">
+				<h3 class="section-header">Namespace</h3>
+				<ul class="link-list">
+					
+					<li><span class="type">MODULE</span> <a href="Mapping/Helpers.html">Sinatra::Mapping::Helpers</a></li>
+					
+				</ul>
+			</div>
+			
+
+			<!-- Method Quickref -->
+			
+			<div id="method-list-section" class="section">
+				<h3 class="section-header">Methods</h3>
+				<ul class="link-list">
+					
+					<li><a href="#M000003">::registered</a></li>
+					
+					<li><a href="#M000002">#build_path_to</a></li>
+					
+					<li><a href="#M000007">#cleanup_paths</a></li>
+					
+					<li><a href="#M000006">#locations_get_from</a></li>
+					
+					<li><a href="#M000000">#map</a></li>
+					
+					<li><a href="#M000004">#map_path_to</a></li>
+					
+					<li><a href="#M000001">#mapping</a></li>
+					
+					<li><a href="#M000005">#path_mapped</a></li>
+					
+				</ul>
+			</div>
+			
+
+			<!-- Included Modules -->
+			
+		</div>
+
+		<div id="project-metadata">
+			
+			
+			<div id="fileindex-section" class="section project-section">
+				<h3 class="section-header">Files</h3>
+				<ul>
+				
+					<li class="file"><a href="../CHANGES.html">CHANGES</a></li>
+				
+					<li class="file"><a href="../LICENSE.html">LICENSE</a></li>
+				
+					<li class="file"><a href="../README_rdoc.html">README.rdoc</a></li>
+				
+				</ul>
+			</div>
+			
+
+			<div id="classindex-section" class="section project-section">
+				<h3 class="section-header">Class Index
+					<span class="search-toggle"><img src="../images/find.png"
+						height="16" width="16" alt="[+]"
+						title="show/hide quicksearch" /></span></h3>
+				<form action="#" method="get" accept-charset="utf-8" class="initially-hidden">
+				<fieldset>
+					<legend>Quicksearch</legend>
+					<input type="text" name="quicksearch" value=""
+						class="quicksearch-field" />
+				</fieldset>
+				</form>
+
+				<ul class="link-list">
+				
+					<li><a href="../Sinatra.html">Sinatra</a></li>
+				
+					<li><a href="../Sinatra/Mapping.html">Sinatra::Mapping</a></li>
+				
+					<li><a href="../Sinatra/Mapping/Helpers.html">Sinatra::Mapping::Helpers</a></li>
+				
+				</ul>
+				<div id="no-class-search-results" style="display: none;">No matching classes.</div>
+			</div>
+
+			
+		</div>
+	</div>
+
+	<div id="documentation">
+		<h1 class="module">Sinatra::Mapping</h1>
+
+		<div id="description">
+			<p>
+Copyright &#169; 2009 Hallison Batista
+</p>
+<p>
+This extension is useful for any Web application written using <a
+href="../Sinatra.html">Sinatra</a> DSL. The main goal is help developers to
+write URL path methods.
+</p>
+
+		</div>
+
+		<!-- Constants -->
+		
+
+		<!-- Attributes -->
+		
+		<div id="attribute-method-details" class="method-section section">
+			<h3 class="section-header">Attributes</h3>
+
+			
+			<div id="locations-attribute-method" class="method-detail">
+				<a name="locations"></a>
+				
+				<div class="method-heading attribute-method-heading">
+					<span class="method-name">locations</span><span
+						class="attribute-access-type">[R]</span>
+				</div>
+
+				<div class="method-description">
+				
+				<p>
+All location paths mapped.
+</p>
+				
+				</div>
+			</div>
+			
+		</div>
+		
+
+		<!-- Methods -->
+		
+		<div id="public-class-method-details" class="method-section section">
+			<h3 class="section-header">Public Class Methods</h3>
+
+		
+			<div id="registered-method" class="method-detail ">
+				<a name="M000003"></a>
+
+				<div class="method-heading">
+				
+					<span class="method-name">registered</span><span
+						class="method-args">(app)</span>
+					<span class="method-click-advice">click to toggle source</span>
+				
+				</div>
+
+				<div class="method-description">
+					
+					<p>
+Register automatically all helpers in base application.
+</p>
+					
+
+					
+					<div class="method-source-code"
+						id="registered-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/sinatra/mapping.rb, line 80</span>
+80:   <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">registered</span>(<span class="ruby-identifier">app</span>)
+81:     <span class="ruby-identifier">app</span>.<span class="ruby-identifier">helpers</span> <span class="ruby-constant">Mapping</span><span class="ruby-operator">::</span><span class="ruby-constant">Helpers</span>
+82:   <span class="ruby-keyword kw">end</span></pre>
+					</div>
+					
+				</div>
+
+				
+			</div>
+
+		
+		</div>
+	
+		<div id="public-instance-method-details" class="method-section section">
+			<h3 class="section-header">Public Instance Methods</h3>
+
+		
+			<div id="build-path-to-method" class="method-detail ">
+				<a name="M000002"></a>
+
+				<div class="method-heading">
+				
+					<span class="method-name">build_path_to</span><span
+						class="method-args">(script_name = nil, *args)</span>
+					<span class="method-click-advice">click to toggle source</span>
+				
+				</div>
+
+				<div class="method-description">
+					
+					<p>
+Returns URL path with query instructions. This method has been extracted
+from <a
+href="http://wiki.github.com/sinatra/sinatra/howto-generate-links">wiki.github.com/sinatra/sinatra/howto-generate-links</a>.
+</p>
+					
+
+					
+					<div class="method-source-code"
+						id="build-path-to-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/sinatra/mapping.rb, line 71</span>
+71:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">build_path_to</span>(<span class="ruby-identifier">script_name</span> = <span class="ruby-keyword kw">nil</span>, <span class="ruby-operator">*</span><span class="ruby-identifier">args</span>)
+72:     <span class="ruby-identifier">args</span>.<span class="ruby-identifier">compact!</span>
+73:     <span class="ruby-identifier">query</span> = <span class="ruby-identifier">args</span>.<span class="ruby-identifier">pop</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">args</span>.<span class="ruby-identifier">last</span>.<span class="ruby-identifier">kind_of?</span>(<span class="ruby-constant">Hash</span>)
+74:     <span class="ruby-identifier">path</span>  = <span class="ruby-identifier">map_path_to</span>(<span class="ruby-identifier">script_name</span>, <span class="ruby-operator">*</span><span class="ruby-identifier">args</span>)
+75:     <span class="ruby-identifier">path</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value str">&quot;?&quot;</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">Rack</span><span class="ruby-operator">::</span><span class="ruby-constant">Utils</span><span class="ruby-operator">::</span><span class="ruby-identifier">build_query</span>(<span class="ruby-identifier">query</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">query</span>
+76:     <span class="ruby-identifier">path</span>
+77:   <span class="ruby-keyword kw">end</span></pre>
+					</div>
+					
+				</div>
+
+				
+			</div>
+
+		
+			<div id="map-method" class="method-detail ">
+				<a name="M000000"></a>
+
+				<div class="method-heading">
+				
+					<span class="method-name">map</span><span
+						class="method-args">(name, path = nil)</span>
+					<span class="method-click-advice">click to toggle source</span>
+				
+				</div>
+
+				<div class="method-description">
+					
+					<p>
+Write URL path method for use in HTTP methods.
+</p>
+<p>
+The map method most be used by following syntax:
+</p>
+<pre>
+  map &lt;name&gt;, &lt;path&gt;
+</pre>
+<p>
+If name is equal :root, then returns path ended by slash &#8220;/&#8221;.
+</p>
+<pre>
+  map :root,    &quot;tasks&quot;       # =&gt; /tasks/
+  map :changes, &quot;last-changes # =&gt; /tasks/last-changes
+</pre>
+					
+
+					
+					<div class="method-source-code"
+						id="map-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/sinatra/mapping.rb, line 27</span>
+27:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">map</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">path</span> = <span class="ruby-keyword kw">nil</span>)
+28:     <span class="ruby-ivar">@locations</span> <span class="ruby-operator">||=</span> {}
+29:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">name</span>.<span class="ruby-identifier">to_sym</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">:root</span>
+30:       <span class="ruby-ivar">@locations</span>[<span class="ruby-identifier">:root</span>] = <span class="ruby-identifier">cleanup_paths</span>(<span class="ruby-node">&quot;/#{path}/&quot;</span>)
+31:       <span class="ruby-identifier">metadef</span> <span class="ruby-node">&quot;#{name}_path&quot;</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-operator">*</span><span class="ruby-identifier">paths</span><span class="ruby-operator">|</span>
+32:         <span class="ruby-identifier">cleanup_paths</span>(<span class="ruby-node">&quot;/#{@locations[:root]}/?&quot;</span>)
+33:       <span class="ruby-keyword kw">end</span>
+34:     <span class="ruby-keyword kw">else</span>
+35:       <span class="ruby-ivar">@locations</span>[<span class="ruby-identifier">name</span>.<span class="ruby-identifier">to_sym</span>] = <span class="ruby-identifier">cleanup_paths</span>(<span class="ruby-identifier">path</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">name</span>.<span class="ruby-identifier">to_s</span>)
+36:       <span class="ruby-identifier">metadef</span> <span class="ruby-node">&quot;#{name}_path&quot;</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-operator">*</span><span class="ruby-identifier">paths</span><span class="ruby-operator">|</span>
+37:         <span class="ruby-identifier">map_path_to</span>(<span class="ruby-ivar">@locations</span>[<span class="ruby-identifier">name</span>.<span class="ruby-identifier">to_sym</span>], <span class="ruby-operator">*</span><span class="ruby-identifier">paths</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value str">&quot;/?&quot;</span>)
+38:       <span class="ruby-keyword kw">end</span>
+39:     <span class="ruby-keyword kw">end</span>
+40:   <span class="ruby-keyword kw">end</span></pre>
+					</div>
+					
+				</div>
+
+				
+			</div>
+
+		
+			<div id="mapping-method" class="method-detail ">
+				<a name="M000001"></a>
+
+				<div class="method-heading">
+				
+					<span class="method-name">mapping</span><span
+						class="method-args">(hash)</span>
+					<span class="method-click-advice">click to toggle source</span>
+				
+				</div>
+
+				<div class="method-description">
+					
+					<p>
+Auto mapping from a hash. This method is very useful. Example:
+</p>
+<pre>
+  # In Web application.
+  class WebApp &lt;&lt; Sinatra::Base
+    mapping :root   =&gt; &quot;tasks&quot;,   # /tasks
+            :status =&gt; &quot;changes&quot;  # /tasks/changes
+  end
+</pre>
+<p>
+Or, it&#8217;s possible use from configuration file.
+</p>
+<pre>
+  # YAML file &quot;settings.yml&quot;.
+  mapping:
+    root: tasks
+    status: changes
+
+  # In Sinatra application.
+  mapping YAML.load_file(&quot;settings.yml&quot;)[:mapping]
+  # root_path   # /tasks
+  # status_path # /tasks/changes
+</pre>
+					
+
+					
+					<div class="method-source-code"
+						id="mapping-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/sinatra/mapping.rb, line 62</span>
+62:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">mapping</span>(<span class="ruby-identifier">hash</span>)
+63:     <span class="ruby-identifier">hash</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">name</span>, <span class="ruby-identifier">path</span><span class="ruby-operator">|</span>
+64:       <span class="ruby-identifier">map</span> <span class="ruby-identifier">name</span>, <span class="ruby-identifier">path</span>
+65:     <span class="ruby-keyword kw">end</span>
+66:   <span class="ruby-keyword kw">end</span></pre>
+					</div>
+					
+				</div>
+
+				
+			</div>
+
+		
+		</div>
+	
+		<div id="private-instance-method-details" class="method-section section">
+			<h3 class="section-header">Private Instance Methods</h3>
+
+		
+			<div id="cleanup-paths-method" class="method-detail ">
+				<a name="M000007"></a>
+
+				<div class="method-heading">
+				
+					<span class="method-name">cleanup_paths</span><span
+						class="method-args">(*paths)</span>
+					<span class="method-click-advice">click to toggle source</span>
+				
+				</div>
+
+				<div class="method-description">
+					
+					<p>
+Clean all duplicated slashes.
+</p>
+					
+
+					
+					<div class="method-source-code"
+						id="cleanup-paths-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sinatra/mapping.rb, line 109</span>
+109:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">cleanup_paths</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">paths</span>)
+110:     <span class="ruby-comment cmt">#.gsub(%r{#{@locations[:root]}/#{@locations[:root]}}, @locations[:root])</span>
+111:     <span class="ruby-identifier">paths</span>.<span class="ruby-identifier">join</span>(<span class="ruby-value str">'/'</span>).<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp re">/[\/]{2,}/</span>,<span class="ruby-value str">'/'</span>)
+112:   <span class="ruby-keyword kw">end</span></pre>
+					</div>
+					
+				</div>
+
+				
+			</div>
+
+		
+			<div id="locations-get-from-method" class="method-detail ">
+				<a name="M000006"></a>
+
+				<div class="method-heading">
+				
+					<span class="method-name">locations_get_from</span><span
+						class="method-args">(*args)</span>
+					<span class="method-click-advice">click to toggle source</span>
+				
+				</div>
+
+				<div class="method-description">
+					
+					<p>
+Get paths from location maps.
+</p>
+					
+
+					
+					<div class="method-source-code"
+						id="locations-get-from-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sinatra/mapping.rb, line 100</span>
+100:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">locations_get_from</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">args</span>)
+101:     <span class="ruby-identifier">args</span>.<span class="ruby-identifier">flatten</span>.<span class="ruby-identifier">reject</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">path</span><span class="ruby-operator">|</span>
+102:       <span class="ruby-identifier">path</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">:root</span>
+103:     <span class="ruby-keyword kw">end</span>.<span class="ruby-identifier">collect</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">path</span><span class="ruby-operator">|</span>
+104:       <span class="ruby-ivar">@locations</span>[<span class="ruby-identifier">path</span>] <span class="ruby-operator">||</span> <span class="ruby-identifier">path</span>
+105:     <span class="ruby-keyword kw">end</span>
+106:   <span class="ruby-keyword kw">end</span></pre>
+					</div>
+					
+				</div>
+
+				
+			</div>
+
+		
+			<div id="map-path-to-method" class="method-detail ">
+				<a name="M000004"></a>
+
+				<div class="method-heading">
+				
+					<span class="method-name">map_path_to</span><span
+						class="method-args">(*args)</span>
+					<span class="method-click-advice">click to toggle source</span>
+				
+				</div>
+
+				<div class="method-description">
+					
+					<p>
+Check arguments. If argument is a symbol and exist map path before setted,
+then return path mapped by symbol name.
+</p>
+					
+
+					
+					<div class="method-source-code"
+						id="map-path-to-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/sinatra/mapping.rb, line 88</span>
+88:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">map_path_to</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">args</span>)
+89:     <span class="ruby-identifier">script_name</span> = <span class="ruby-identifier">args</span>.<span class="ruby-identifier">shift</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">args</span>.<span class="ruby-identifier">first</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp re">%r{^/\w.*}</span>
+90:     <span class="ruby-identifier">path_mapped</span>(<span class="ruby-identifier">script_name</span>, <span class="ruby-operator">*</span><span class="ruby-identifier">locations_get_from</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">args</span>))
+91:   <span class="ruby-keyword kw">end</span></pre>
+					</div>
+					
+				</div>
+
+				
+			</div>
+
+		
+			<div id="path-mapped-method" class="method-detail ">
+				<a name="M000005"></a>
+
+				<div class="method-heading">
+				
+					<span class="method-name">path_mapped</span><span
+						class="method-args">(script_name, *args)</span>
+					<span class="method-click-advice">click to toggle source</span>
+				
+				</div>
+
+				<div class="method-description">
+					
+					<p>
+Returns all paths mapped by root path in prefix.
+</p>
+					
+
+					
+					<div class="method-source-code"
+						id="path-mapped-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/sinatra/mapping.rb, line 94</span>
+94:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">path_mapped</span>(<span class="ruby-identifier">script_name</span>, <span class="ruby-operator">*</span><span class="ruby-identifier">args</span>)
+95:     <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">cleanup_paths</span>(<span class="ruby-node">&quot;/#{script_name}/#{@locations[:root]}&quot;</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">args</span>.<span class="ruby-identifier">empty?</span>
+96:     <span class="ruby-identifier">cleanup_paths</span>(<span class="ruby-node">&quot;/#{script_name}/#{@locations[:root]}/#{args.join('/')}&quot;</span>)
+97:   <span class="ruby-keyword kw">end</span></pre>
+					</div>
+					
+				</div>
+
+				
+			</div>
+
+		
+		</div>
+	
+
+	</div>
+
+
+	<div id="rdoc-debugging-section-dump" class="debugging-section">
+	
+		<p>Disabled; run with --debug to generate this.</p>
+	
+	</div>
+
+	<div id="validator-badges">
+		<p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+		<p><small>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish
+			Rdoc Generator</a> 1.1.6</small>.</p>
+	</div>
+
+</body>
+</html>
+

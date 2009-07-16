@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+	"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+	<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+
+	<title>Sinatra::Mapping - API Documentation</title>
+
+	<link type="text/css" media="screen" href="rdoc.css" rel="stylesheet" />
+
+	<script src="js/jquery.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/thickbox-compressed.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/quicksearch.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/darkfish.js" type="text/javascript" charset="utf-8"></script>
+
+</head>
+<body class="indexpage">
+
+	
+	<h1>Sinatra::Mapping - API Documentation</h1>
+
+	
+	<div id="main">
+		
+<p>
+The extension <a href="Sinatra/Mapping.html">Sinatra::Mapping</a> is a
+minimal module that is useful for create map names for <a
+href="http://www.ruby-lang.org">Ruby</a> <a
+href="http://www.sinatrarb.com">Sinatra</a> web applications.
+</p>
+<h2>Getting start</h2>
+<p>
+Install stable version gem from <a
+href="http://www.rubyforge.org/">RubyForge.org</a>:
+</p>
+<pre>
+  gem install sinatra-mapping
+</pre>
+<p>
+Or, install development version gem from <a
+href="http://github.com/">GitHub.com</a>:
+</p>
+<pre>
+  gem install hallison-sinatra-mapping --source http://gems.github.com
+</pre>
+<h2>How to use</h2>
+<p>
+<a href="Sinatra.html">Sinatra</a> implements REST routes:
+</p>
+<pre>
+  get '/' do
+    .. show something ..
+  end
+
+  post '/' do
+    .. create something ..
+  end
+
+  put '/' do
+    .. update something ..
+  end
+
+  delete '/' do
+    .. annihilate something ..
+  end
+</pre>
+<p>
+For improve this routes use extension by registered method in the main
+source of application. To better understand, copy and paste the following
+example in <a href="http://www.ruby-lang.org">Ruby</a> source file
+<tt>webfoo.rb</tt>:
+</p>
+<pre>
+  #!/usr/bin/env ruby
+
+  require 'rubygems'
+  require 'sinatra'
+  require 'sinatra/mapping'
+  require 'sinatra/mapping_helpers'
+
+  class Sinatra::Application
+
+    register Sinatra::Mapping
+    helpers  Sinatra::MappingHelpers
+
+    map :root,    &quot;blog&quot;    # /blog/
+    map :entries, &quot;posts&quot;   # /blog/posts
+    map :tags,    &quot;labels&quot;  # /blog/labels
+
+    mapping :entry          =&gt; &quot;posts/:entry_id&quot;,           # /blog/posts/id-for-post
+            :entry_comments =&gt; &quot;posts/:entry_id/comments&quot;,  # /blog/posts/id-for-post/comments
+            :tagged_entries =&gt; &quot;labels/:tag_id/entries&quot;     # /blog/labels/id-for-tag/entries
+
+    # /blog/
+    get root_path do
+      &lt;&lt;-end_content
+        &lt;h1&gt;Welcome to Foo Web Application&lt;/h1&gt;
+        &lt;ul&gt;
+          &lt;li&gt;#{link_to title_path(:entries), :entries, :title =&gt; title_path(:entries)}&lt;/li&gt;
+          &lt;li&gt;#{link_to title_path(:tags),    :tags,    :title =&gt; title_path(:tags)}&lt;/li&gt;
+        &lt;/ul&gt;
+      end_content
+    end
+
+    # /blog/entries
+    get entries_path do
+      &lt;&lt;-end_content
+        &lt;h1&gt;Welcome to Foo Web Application&lt;/h1&gt;
+        &lt;h2&gt;#{title_path(:entries)}&lt;/h2&gt;
+        &lt;ul&gt;
+          &lt;li&gt;#{link_to &quot;Testing new entry ...&quot;, :entries, &quot;testing-new-entry&quot;}&lt;/li&gt;
+          &lt;li&gt;#{link_to &quot;Testing old entry ...&quot;, :entries, &quot;testing-old-entry&quot;}&lt;/li&gt;
+        &lt;/ul&gt;
+        &lt;p&gt;
+          #{link_to &quot;Back&quot;, :root}
+        &lt;/p&gt;
+      end_content
+    end
+
+    # /blog/labels/tag-id-for-show-content
+    get tags_path do
+      &lt;&lt;-end_content
+        &lt;h1&gt;Welcome to Foo Web Application&lt;/h1&gt;
+        &lt;h2&gt;#{title_path(:tags)}&lt;/h2&gt;
+        &lt;ul&gt;
+          &lt;li&gt;#{link_to &quot;Ruby&quot;,    :tags, &quot;ruby&quot;,    &quot;entries&quot;}&lt;/li&gt;
+          &lt;li&gt;#{link_to &quot;Sinatra&quot;, :tags, &quot;sinatra&quot;, &quot;entries&quot;}&lt;/li&gt;
+          &lt;li&gt;#{link_to &quot;Mapping&quot;, :tags, &quot;mapping&quot;, &quot;entries&quot;}&lt;/li&gt;
+        &lt;/ul&gt;
+        &lt;p&gt;
+          #{link_to &quot;Back&quot;, :root}
+        &lt;/p&gt;
+      end_content
+    end
+
+    # /blog/entries/entry-id-for-show-content
+    get entry_path do |entry_id|
+      title = entry_id.gsub('-',' ').capitalize
+      &lt;&lt;-end_content
+        &lt;h1&gt;Welcome to Foo Web Application&lt;/h1&gt;
+        &lt;h2&gt;#{title}&lt;/h2&gt;
+        &lt;p&gt;
+          It works!
+        &lt;/p&gt;
+        &lt;p&gt;
+          #{link_to &quot;Back&quot;, :root} | #{link_to &quot;Comments&quot;, :entries, entry_id, 'comments'}
+        &lt;/p&gt;
+      end_content
+    end
+
+    # /blog/entries/entry-id-for-show-content/comments
+    get entry_comments_path do |entry_id|
+      title = entry_id.gsub('-',' ').capitalize
+      &lt;&lt;-end_content
+        &lt;h1&gt;Welcome to Foo Web Application&lt;/h1&gt;
+        &lt;h2&gt;#{title}&lt;/h2&gt;
+        &lt;p&gt;
+          It works and show comments for &quot;#{title}&quot;.
+        &lt;/p&gt;
+        &lt;p&gt;
+          #{link_to &quot;Back&quot;, :root}
+        &lt;/p&gt;
+      end_content
+    end
+
+    get tagged_entries_path do |tag_id|
+      &lt;&lt;-end_content
+        &lt;h1&gt;Welcome to Foo Web Application&lt;/h1&gt;
+        &lt;h2&gt;#{tag_id.capitalize}&lt;/h2&gt;
+        &lt;p&gt;
+          It works and show all entries tagged with &quot;#{tag_id}&quot;.
+        &lt;/p&gt;
+        &lt;p&gt;
+          #{link_to &quot;Back&quot;, :root}
+        &lt;/p&gt;
+      end_content
+    end
+
+  end
+</pre>
+<p>
+Run:
+</p>
+<pre>
+  $ ruby webfoo.rb -p 3000
+</pre>
+<p>
+Open Web browser <a
+href="http://localhost:3000/blog/">localhost:3000/blog/</a> and look
+&#8230; it works!
+</p>
+<h2>Copyright</h2>
+<p>
+Copyright &#169; 2009 Hallison Batista
+</p>
+<p>
+Permission is hereby granted, free of charge, to any person obtaining a
+copy of this software and associated documentation files (the
+&#8220;Software&#8221;), to deal in the Software without restriction,
+including without limitation the rights to use, copy, modify, merge,
+publish, distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to the
+following conditions:
+</p>
+<p>
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+</p>
+<p>
+THE SOFTWARE IS PROVIDED &#8220;AS IS&#8221;, WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+USE OR OTHER DEALINGS IN THE SOFTWARE.
+</p>
+
+	</div>
+	
+
+	
+	
+	<h2>Files</h2>
+	<ul>
+		
+			<li class="file"><a href="CHANGES.html">CHANGES</a></li>
+		
+			<li class="file"><a href="LICENSE.html">LICENSE</a></li>
+		
+			<li class="file"><a href="README_rdoc.html">README.rdoc</a></li>
+		
+	</ul>
+	
+
+	<h2>Classes/Modules</h2>
+	<ul>
+		
+		<li class="module"><a href="Sinatra.html">Sinatra</a></li>
+		
+		<li class="module"><a href="Sinatra/Mapping.html">Sinatra::Mapping</a></li>
+		
+		<li class="module"><a href="Sinatra/Mapping/Helpers.html">Sinatra::Mapping::Helpers</a></li>
+		
+	</ul>
+
+	<h2>Methods</h2>
+	<ul>
+		
+			<li><a href="Sinatra/Mapping.html#M000003">::registered &mdash; Sinatra::Mapping</a></li>
+		
+			<li><a href="Sinatra/Mapping.html#M000002">#build_path_to &mdash; Sinatra::Mapping</a></li>
+		
+			<li><a href="Sinatra/Mapping.html#M000007">#cleanup_paths &mdash; Sinatra::Mapping</a></li>
+		
+			<li><a href="Sinatra/Mapping/Helpers.html#M000011">#extract_link_attributes &mdash; Sinatra::Mapping::Helpers</a></li>
+		
+			<li><a href="Sinatra/Mapping/Helpers.html#M000013">#extract_query_attributes &mdash; Sinatra::Mapping::Helpers</a></li>
+		
+			<li><a href="Sinatra/Mapping/Helpers.html#M000014">#link_attributes &mdash; Sinatra::Mapping::Helpers</a></li>
+		
+			<li><a href="Sinatra/Mapping/Helpers.html#M000009">#link_to &mdash; Sinatra::Mapping::Helpers</a></li>
+		
+			<li><a href="Sinatra/Mapping.html#M000006">#locations_get_from &mdash; Sinatra::Mapping</a></li>
+		
+			<li><a href="Sinatra/Mapping.html#M000000">#map &mdash; Sinatra::Mapping</a></li>
+		
+			<li><a href="Sinatra/Mapping.html#M000004">#map_path_to &mdash; Sinatra::Mapping</a></li>
+		
+			<li><a href="Sinatra/Mapping.html#M000001">#mapping &mdash; Sinatra::Mapping</a></li>
+		
+			<li><a href="Sinatra/Mapping.html#M000005">#path_mapped &mdash; Sinatra::Mapping</a></li>
+		
+			<li><a href="Sinatra/Mapping/Helpers.html#M000010">#path_to &mdash; Sinatra::Mapping::Helpers</a></li>
+		
+			<li><a href="Sinatra/Mapping/Helpers.html#M000012">#select_link_attributes &mdash; Sinatra::Mapping::Helpers</a></li>
+		
+			<li><a href="Sinatra/Mapping/Helpers.html#M000008">#title_path &mdash; Sinatra::Mapping::Helpers</a></li>
+		
+	</ul>
+
+	<div id="validator-badges">
+		<p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+		<p><small>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish
+			Rdoc Generator</a> 1.1.6</small>.</p>
+	</div>
+</body>
+</html>
