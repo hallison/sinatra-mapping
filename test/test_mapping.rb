@@ -10,60 +10,61 @@ require 'ruby-debug'
 class AppForTest < Sinatra::Base
 
   register Sinatra::Mapping
+  helpers  Sinatra::MappingHelpers
 
   map :root                        # root_path    => /
   map :posts,   "articles"         # posts_path   => /articles
-  map :archive, "archive/articles" # archive_path => /articles/archive
+  map :archive, "archive/articles" # archive_path => /archive/articles
   map :about                       # about_path   => /about
 
-  helpers Sinatra::MappingHelpers
+  #mapping YAML.load_file("#{File.dirname(__FILE__)}/fixtures.yml")
 
   before do
     @date = Date.today
   end
 
   get root_path do
-    "#{title_path :root}:#{options.root_path}"
+    "#{title_path :root}:#{path_to :root}"
   end
 
   get posts_path do
-    "#{title_path :posts}:#{options.posts_path}"
+    "#{title_path :posts}:#{path_to :posts}"
   end
 
   get posts_path "/" do
-    redirect options.posts_path, 301
+    redirect path_to(:posts), 301
   end
 
   get posts_path "/:year/:month/:day/:permalink" do |year, month, day, permalink|
-    "#{title_path :posts}:" + options.posts_path("#{@date.to_s.gsub('-','/')}/#{permalink}")
+    "#{title_path :posts}:" + path_to(:posts, "#{@date.to_s.gsub('-','/')}/#{permalink}")
   end
 
   get posts_path "/:year/:month/:day/:permalink/" do |year, month, day, permalink|
-    redirect options.posts_path(year, month, day, permalink), 301
+    redirect path_to(:posts, year, month, day, permalink), 301
   end
 
   get archive_path do
-    "#{title_path :archive}:#{options.archive_path}"
+    "#{title_path :archive}:#{path_to :archive}"
   end
 
   get archive_path "/" do
-    redirect options.archive_path, 301
+    redirect path_to(:archive), 301
   end
 
   get archive_path "/:year/:month/:day/:permalink" do |year, month, day, permalink|
-    "#{title_path :archive}:" + options.archive_path("#{@date.to_s.gsub('-','/')}/#{permalink}")
+    "#{title_path :archive}:" + path_to(:archive, "#{@date.to_s.gsub('-','/')}/#{permalink}")
   end
 
   get archive_path "/:year/:month/:day/:permalink/" do |year, month, day, permalink|
-    redirect options.archive_path(year, month, day, permalink), 301
+    redirect path_to(:archive, year, month, day, permalink), 301
   end
 
   get about_path do
-    "#{title_path :about}:#{options.about_path}"
+    "#{title_path :about}:#{path_to :about}"
   end
 
   get about_path "/" do
-    redirect options.about_path, 301
+    redirect path_to(:about), 301
   end
 
 end

@@ -1,4 +1,10 @@
-= Sinatra Mapping - Map easily URLs paths
+= Sinatra::Mapping - Map easily URLs paths
+
+
+* {Repository}[http://github.com/hallison/sinatra-mapping]
+* {Project}[http://rubyforge.org/projects/sinatra-mapping]
+* {Documentation}[:link:Sinatra/Mapping.html]
+* {Issues}[http://github.com/hallison/sinatra-mapping/issues]
 
 {Sinatra}[http://www.sinatrarb.com]
 {mapping extension}[http://sinatra-mapping.rubyforge.org] is a minimal
@@ -10,7 +16,7 @@ Install stable version gem:
 
 Or, install development version gem:
 
-  gem install sinatra-mapping --source http://gems.github.com
+  gem install hallison-sinatra-mapping --source http://gems.github.com
 
 == Getting start
 

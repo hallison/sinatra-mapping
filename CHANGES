@@ -1,5 +1,10 @@
 = Changes
 
+[0.1.1 - July 2009]
+  * New helper methods have been added.
+
+  * Improvements in map method.
+
 [0.1.0 - July 2009]
   * This version has been extracted from
     {Postview}[http://postview.rubyforge.org] project.

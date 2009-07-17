@@ -20,26 +20,34 @@ module Sinatra
     #   map :root,    "tasks"       # => /tasks/
     #   map :changes, "last-changes # => /tasks/last-changes
     def map(name, path = nil)
-      @root_path ||= ""
       @locations ||= {}
       if name.to_sym == :root
-        @root_path = cleanup_paths("/#{path}/")
+        @locations[:root] = cleanup_paths("/#{path}/")
         metadef "#{name}_path" do |*paths|
-          @root_path
+          @locations[:root]
         end
       else
         @locations[name.to_sym] = path || name.to_s
         metadef "#{name}_path" do |*paths|
-          path_to(@locations[name.to_sym], *paths)
+          map_path_to(@locations[name.to_sym], *paths)
         end
       end
+    end
+
+    # Returns URL path with query instructions.
+    def query_path_to(*args)
+      args.compact!
+      query  = args.pop if args.last.kind_of?(Hash)
+      path   = map_path_to(*args)
+      path  << "?" << Rack::Utils::build_query(query) if query
+      path
     end
 
   private
 
     # Check arguments. If argument is a symbol and exist map path before
     # setted, then return path mapped by symbol name.
-    def path_to(*args)
+    def map_path_to(*args)
       path_mapped(*locations_get_from(*args))
     end
 
@@ -50,7 +58,6 @@ module Sinatra
 
     # Get paths from location maps.
     def locations_get_from(*args)
-      args.delete(:root)
       args.collect do |path|
         @locations.has_key?(path) ? @locations[path] : path
       end
@@ -67,17 +74,3 @@ module Sinatra
 
 end # module Sinatra
 
-#  private
-#
-#    attr_reader   :root
-#    attr_accessor :locations
-#
-#    def root_set_to(path)
-#      @root = path_clean("/#{path}/")
-#    end
-#    alias :root= :root_set_to
-#
-#
-#  private
-#
-#
