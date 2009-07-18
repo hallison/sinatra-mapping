@@ -12,12 +12,11 @@ class AppForTest < Sinatra::Base
   register Sinatra::Mapping
   helpers  Sinatra::MappingHelpers
 
-  map :root                        # root_path    => /
-  map :posts,   "articles"         # posts_path   => /articles
-  map :archive, "archive/articles" # archive_path => /archive/articles
-  map :about                       # about_path   => /about
+  map :root   # root_path    => /
+  map :about  # about_path   => /about
 
-  #mapping YAML.load_file("#{File.dirname(__FILE__)}/fixtures.yml")
+  mapping :posts   => "articles",        # posts_path   => /articles
+          :archive => "archive/articles" # archive_path => /archive/articles
 
   before do
     @date = Date.today

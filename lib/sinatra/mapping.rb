@@ -34,6 +34,31 @@ module Sinatra
       end
     end
 
+    # Auto mapping from a hash. This method is very useful.
+    # Example:
+    #
+    #   # In Web application.
+    #   class WebApp << Sinatra::Base
+    #     mapping :root   => "tasks",   # /tasks
+    #             :status => "changes"  # /tasks/changes
+    #   end
+    #
+    # Or, it's possible use from configuration file.
+    #
+    #   # YAML file "settings.yml".
+    #   mapping:
+    #     root: tasks
+    #     status: changes
+    #   # In Web application.
+    #   class WebApp << Sinatra::Base
+    #     mapping YAML.load_file("settings.yml")[:mapping]
+    #   end
+    def mapping(hash)
+      hash.each do |name, path|
+        map name, path
+      end
+    end
+
     # Returns URL path with query instructions.
     def query_path_to(*args)
       args.compact!
