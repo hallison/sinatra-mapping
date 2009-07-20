@@ -1,5 +1,13 @@
 = Changes
 
+[0.2.1 - July 2009]
+    * The helper method for show title path has been fixed.
+
+    * Added new task for show the current version.
+
+[0.2.0 - July 2009]
+    * New method for mapping of paths has been added.
+
 [0.1.1 - July 2009]
   * New helper methods have been added.
 

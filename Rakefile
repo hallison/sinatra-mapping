@@ -4,26 +4,39 @@ require 'rake/gempackagetask'
 require 'rake/rdoctask'
 load    'sinatra-mapping.gemspec'
 
+def current_version(file = "VERSION")
+  @current_value ||= YAML.load_file(file) || {}
+end
+
 desc "Generate version for release and tagging."
 task :version, [:major, :minor, :patch, :release, :date, :cycle] do |taskspec, version|
   require 'parsedate'
-  current      = YAML.load_file(taskspec.name.upcase) || {}
-  version_date = Date.new(*ParseDate.parsedate(version[:date] || current[:date].to_s).compact) unless version or current
+  version_date = Date.new(*ParseDate.parsedate(version[:date] || current_version[:date].to_s).compact) unless version or current_version
   newer        = {
-    :major   => version[:major].to_i   || current[:major].to_i,
-    :minor   => version[:minor].to_i   || current[:minor].to_i,
-    :patch   => version[:patch].to_i   || current[:patch].to_i,
+    :major   => version[:major].to_i   || current_version[:major].to_i,
+    :minor   => version[:minor].to_i   || current_version[:minor].to_i,
+    :patch   => version[:patch].to_i   || current_version[:patch].to_i,
     :release => version[:release].to_s.empty? ? nil : version[:release].to_i,
     :date    => version_date           || Date.today,
-    :cycle   => version[:cycle]        || current[:cycle]
+    :cycle   => version[:cycle]        || current_version[:cycle]
   }
 
-  newer.merge(current) do |key, new_value, current_value|
+  newer.merge(current_version) do |key, new_value, current_value|
     new_value || current_value
   end
 
   File.open(taskspec.name.upcase, "w") do |version_file|
     version_file << newer.to_yaml
+  end
+end
+
+namespace :version do
+  desc "Show the current version."
+  task :show do
+    version = [:major, :minor, :patch, :release].map do |info|
+      current_version[info]
+    end.compact.join('.')
+    puts "#{@spec.name} v#{version} released at #{current_version[:date]} (#{current_version[:cycle]})"
   end
 end
 

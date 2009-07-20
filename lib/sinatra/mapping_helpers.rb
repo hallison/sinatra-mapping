@@ -11,9 +11,9 @@ module Sinatra
     # Creates a title using a path mapped. Otherwise, returns just arguments
     # joined by spaces and capitalised.
     def title_path(path, *args)
-      title = (options.send("#{path}_path") || path).to_s.gsub('/',' ').strip
+      title = (options.locations[path] || path).to_s.gsub('/',' ').strip
       title.gsub!(/\W/,' ') # Cleanup
-      (args.empty? ? title : "#{title} #{args.join(' ')}").capitalize
+      (args.empty? ? title : "#{title} #{args.join(' ')}").strip.capitalize
     end
 
     # Returns all paths with query parameters. Example:

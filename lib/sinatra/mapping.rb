@@ -9,6 +9,9 @@ module Sinatra
   # methods.
   module Mapping
 
+    # All location paths mapped.
+    attr_reader :locations
+
     # Write URL path method for use in HTTP methods.
     #
     # The map method most be used by following syntax:
@@ -78,6 +81,7 @@ module Sinatra
 
     # Returns all paths mapped by root path in prefix.
     def path_mapped(*args)
+      puts "ARGS: #{args.inspect}"
       !args.empty? ? cleanup_paths("/#{@root_path}/#{args.join('/')}") : @root_root
     end
 

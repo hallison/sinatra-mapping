@@ -23,11 +23,11 @@ class AppForTest < Sinatra::Base
   end
 
   get root_path do
-    "#{title_path :root}:#{path_to :root}"
+    "#{title_path :root, :path}:#{path_to :root}"
   end
 
   get posts_path do
-    "#{title_path :posts}:#{path_to :posts}"
+    "#{title_path :posts, :published}:#{path_to :posts}"
   end
 
   get posts_path "/" do
@@ -98,7 +98,7 @@ class TestMapping < Test::Unit::TestCase
     get "#{@locations[:root_path]}" do |response|
       assert response.ok?
       assert_equal "http://example.org#{@locations[:root_path]}", last_request.url
-      assert_equal ":#{@locations[:root_path]}", response.body
+      assert_equal "Path:#{@locations[:root_path]}", response.body
     end
   end
 
@@ -106,7 +106,7 @@ class TestMapping < Test::Unit::TestCase
     get "#{@locations[:posts_path]}" do |response|
       assert response.ok?
       assert_equal "http://example.org#{@locations[:posts_path]}", last_request.url
-      assert_equal "Articles:#{@locations[:posts_path]}", response.body
+      assert_equal "Articles published:#{@locations[:posts_path]}", response.body
     end
 
     get "#{@locations[:posts_path]}/" do
