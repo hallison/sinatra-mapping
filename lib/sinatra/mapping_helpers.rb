@@ -32,7 +32,8 @@ module Sinatra
     #   # => <a href="/tasks/status/finished">All finished</a>
     def link_to(name = nil, *args)
       options = args.last.kind_of?(Hash) ? args.pop : {}
-      "<a href=\"#{path_to *args}\" #{extract_tags_attributes options}>#{name}</a>"
+      url     = args.shift if args.first.to_s =~ /^\w.*:\/\//
+      "<a href=\"#{url || path_to(*args)}\" #{extract_tags_attributes options}>#{name}</a>"
     end
 
     # Returns all paths with query parameters. Example:
