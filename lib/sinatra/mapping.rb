@@ -81,7 +81,7 @@ module Sinatra
 
     # Returns all paths mapped by root path in prefix.
     def path_mapped(*args)
-      !args.empty? ? cleanup_paths("/#{@root_path}/#{args.join('/')}") : @root_root
+      !args.empty? ? cleanup_paths("/#{@locations[:root]}/#{args.join('/')}") : @locations[:root]
     end
 
     # Get paths from location maps.

@@ -1,5 +1,6 @@
-= Sinatra::Mapping - Map easily URLs paths
+= Sinatra::Mapping
 
+Map easily URLs paths.
 
 * {Repository}[http://github.com/hallison/sinatra-mapping]
 * {Project}[http://rubyforge.org/projects/sinatra-mapping]
@@ -33,10 +34,8 @@ Example:
     map :root,    "blog"              # => /blog/
     map :posts,   "articles"          # => /blog/articles
 
-    mapping do
-      :tags    => "labels"            # => /blog/labels
-      :archive => "archived-articles" # => /blog/archived-articles
-    end
+    mapping :tags    => "labels"            # => /blog/labels
+            :archive => "archived-articles" # => /blog/archived-articles
 
     get root_path do
       # /blog/

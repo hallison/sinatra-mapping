@@ -15,8 +15,9 @@ class AppForTest < Sinatra::Base
   map :root   # root_path    => /
   map :about  # about_path   => /about
 
-  mapping :posts   => "articles",        # posts_path   => /articles
-          :archive => "archive/articles" # archive_path => /archive/articles
+  mapping :posts   => "articles",         # posts_path   => /articles
+          :archive => "archive/articles", # archive_path => /archive/articles
+          :search  => "find-articles"     # search_path  => /find-articles
 
   before do
     @date = Date.today
@@ -66,6 +67,10 @@ class AppForTest < Sinatra::Base
     redirect path_to(:about), 301
   end
 
+  get search_path do
+    "#{title_path :search}:#{path_to :search, :keywords => 'ruby'}"
+  end
+
 end
 
 class TestMapping < Test::Unit::TestCase
@@ -78,7 +83,8 @@ class TestMapping < Test::Unit::TestCase
       :root_path    => "/",
       :posts_path   => "/articles",
       :archive_path => "/archive/articles",
-      :about_path   => "/about"
+      :about_path   => "/about",
+      :search_path  => "/find-articles"
     }
   end
 
@@ -95,7 +101,7 @@ class TestMapping < Test::Unit::TestCase
   end
 
   def test_should_return_ok_in_root_path
-    get "#{@locations[:root_path]}" do |response|
+    get app.root_path do |response|
       assert response.ok?
       assert_equal "http://example.org#{@locations[:root_path]}", last_request.url
       assert_equal "Path:#{@locations[:root_path]}", response.body
@@ -103,19 +109,19 @@ class TestMapping < Test::Unit::TestCase
   end
 
   def test_should_return_ok_in_posts_path
-    get "#{@locations[:posts_path]}" do |response|
+    get app.posts_path do |response|
       assert response.ok?
       assert_equal "http://example.org#{@locations[:posts_path]}", last_request.url
       assert_equal "Articles published:#{@locations[:posts_path]}", response.body
     end
 
-    get "#{@locations[:posts_path]}/" do
+    get app.posts_path "/" do
       follow_redirect!
       assert last_response.ok?
       assert_equal "http://example.org#{@locations[:posts_path]}", last_request.url
     end
 
-    path = "#{@locations[:posts_path]}/#{@date.to_s.gsub('-','/')}/post-permalink"
+    path = app.posts_path "/#{@date.to_s.gsub('-','/')}/post-permalink"
     get path do |response|
       assert response.ok?
       assert_equal "http://example.org#{path}", last_request.url
@@ -131,19 +137,19 @@ class TestMapping < Test::Unit::TestCase
   end
 
   def test_should_return_ok_in_archive_path
-    get "#{@locations[:archive_path]}" do |response|
+    get app.archive_path do |response|
       assert response.ok?
       assert_equal "http://example.org#{@locations[:archive_path]}", last_request.url
       assert_equal "Archive articles:#{@locations[:archive_path]}", response.body
     end
 
-    get "#{@locations[:archive_path]}/" do
+    get app.archive_path "/" do
       follow_redirect!
       assert last_response.ok?
       assert_equal "http://example.org#{@locations[:archive_path]}", last_request.url
     end
 
-    path = "#{@locations[:archive_path]}/#{@date.to_s.gsub('-','/')}/post-permalink"
+    path = app.archive_path "/#{@date.to_s.gsub('-','/')}/post-permalink"
     get path do |response|
       assert response.ok?
       assert_equal "http://example.org#{path}", last_request.url
@@ -159,17 +165,26 @@ class TestMapping < Test::Unit::TestCase
   end
 
   def test_should_return_ok_in_about_path
-    get "#{@locations[:about_path]}" do |response|
+    get app.about_path do |response|
       assert response.ok?
       assert_equal "http://example.org#{@locations[:about_path]}", last_request.url
       assert_equal "About:#{@locations[:about_path]}", response.body
     end
 
-    get "#{@locations[:about_path]}/" do
+    get app.about_path "/" do
       follow_redirect!
       assert last_response.ok?
       assert_equal "http://example.org#{@locations[:about_path]}", last_request.url
     end
   end
+
+  def test_should_return_ok_in_search_path
+    get "#{app.search_path}?keywords=ruby" do |response|
+      assert response.ok?
+      assert_equal "http://example.org#{@locations[:search_path]}?keywords=ruby", last_request.url
+      assert_equal "Find articles:#{@locations[:search_path]}?keywords=ruby", response.body
+    end
+  end
+
 end
 

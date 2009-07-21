@@ -1,5 +1,8 @@
 = Changes
 
+[1.0.2 - July 2009]
+  * The method for creates paths with parameters has been fixed.
+
 [1.0.1 - July 2009]
   * The method for creates links has been fixed.
 
