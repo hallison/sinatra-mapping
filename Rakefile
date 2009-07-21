@@ -48,13 +48,13 @@ end
 
 Rake::RDocTask.new("doc") do |rdoc|
   rdoc.title    = "Sinatra::Mapping"
-  rdoc.main     = "README"
+  rdoc.main     = "README.rdoc"
   rdoc.options  = [ '-SHN', '-f', 'darkfish' ]
   rdoc.rdoc_dir = 'doc'
   rdoc.rdoc_files.include(
     "CHANGES",
     "LICENSE",
-    "README",
+    "README.rdoc",
     "lib/**/*.rb"
   )
 end

@@ -1,5 +1,10 @@
 = Changes
 
+[1.0.0 - July 2009]
+  * Added new helper method for creates links.
+
+  * All features for first release have been finished.
+
 [0.2.1 - July 2009]
     * The helper method for show title path has been fixed.
 

@@ -19,9 +19,9 @@
   gemspec.test_files = gemspec.files.select{ |path| path =~ /^test\/test_.*.rb/ }
 
   gemspec.has_rdoc = true
-  gemspec.extra_rdoc_files = %w[README LICENSE]
+  gemspec.extra_rdoc_files = %w[README.rdoc LICENSE]
 
-  gemspec.rdoc_options = ["--line-numbers", "--inline-source", "--title", "Sinatra - Mapping", "--main", "README"]
+  gemspec.rdoc_options = ["--line-numbers", "--inline-source", "--title", "Sinatra - Mapping", "--main", "README.rdoc"]
   gemspec.rubyforge_project = gemspec.name
   gemspec.rubygems_version = "1.3.3"
 end if @version || @info # Gem::Specification

@@ -32,8 +32,11 @@ Example:
 
     map :root,    "blog"              # => /blog/
     map :posts,   "articles"          # => /blog/articles
-    map :tags,    "labels"            # => /blog/labels
-    map :archive, "archived-articles" # => /blog/archived-articles
+
+    mapping do
+      :tags    => "labels"            # => /blog/labels
+      :archive => "archived-articles" # => /blog/archived-articles
+    end
 
     get root_path do
       # /blog/
