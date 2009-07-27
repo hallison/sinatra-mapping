@@ -23,9 +23,10 @@ module Sinatra
     #   map :root,    "tasks"       # => /tasks/
     #   map :changes, "last-changes # => /tasks/last-changes
     def map(name, path = nil)
+      @env       ||= {}
       @locations ||= {}
       if name.to_sym == :root
-        @locations[:root] = cleanup_paths("/#{path}/")
+        @locations[:root] = cleanup_paths("/#{@env['SCRIPT_NAME']}/#{path}/")
         metadef "#{name}_path" do |*paths|
           @locations[:root]
         end

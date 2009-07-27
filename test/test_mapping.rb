@@ -7,6 +7,12 @@ require 'test/unit'
 require 'rack/test'
 require 'ruby-debug'
 
+class Sinatra::Base
+  def env
+    {'SCRIPT_NAME' => 'blog'}
+  end
+end
+
 class AppForTest < Sinatra::Base
 
   register Sinatra::Mapping
