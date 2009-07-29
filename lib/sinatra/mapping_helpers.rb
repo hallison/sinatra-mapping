@@ -32,8 +32,12 @@ module Sinatra
     #   # => <a href="/tasks/status/finished">All finished</a>
     def link_to(name = nil, *args)
       options = args.last.kind_of?(Hash) ? args.pop : {}
-      url     = args.shift if args.first.to_s =~ /^\w.*:\/\//
-      "<a href=\"#{url || path_to(*args)}\" #{extract_tags_attributes options}>#{name}</a>"
+      url     = args.shift if args.first.to_s =~ /^\w.*?:/
+      "<a href=\"#{url || path_to(*args)}\" #{extract_tags_attributes(options)}>#{name || url}</a>"
+    end
+
+    def link_to_query(name, action, query = {}, options = {})
+      "<a href=\"#{path_to(action,query)}\" #{extract_tags_attributes(options)}>#{name}</a>"
     end
 
     # Returns all paths with query parameters. Example:
@@ -45,7 +49,7 @@ module Sinatra
     #   path_to :tags, "ruby", :posts
     #   # returns "/labels/ruby/articles"
     def path_to(*args)
-      options.query_path_to(*args)
+      options.build_path_to(env['SCRIPT_NAME'], *args)
     end
 
   private
@@ -67,7 +71,9 @@ module Sinatra
       end
     end
 
-  end # module MapHelpers
+  end # module MappingHelpers
+
+  helpers MappingHelpers
 
 end # module Sinatra
 

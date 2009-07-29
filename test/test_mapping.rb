@@ -9,7 +9,7 @@ require 'ruby-debug'
 
 class Sinatra::Base
   def env
-    {'SCRIPT_NAME' => 'blog'}
+    @env ||= { 'SCRIPT_NAME' => '/blog' }
   end
 end
 

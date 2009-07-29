@@ -23,10 +23,9 @@ module Sinatra
     #   map :root,    "tasks"       # => /tasks/
     #   map :changes, "last-changes # => /tasks/last-changes
     def map(name, path = nil)
-      @env       ||= {}
       @locations ||= {}
       if name.to_sym == :root
-        @locations[:root] = cleanup_paths("/#{@env['SCRIPT_NAME']}/#{path}/")
+        @locations[:root] = cleanup_paths("/#{path}/")
         metadef "#{name}_path" do |*paths|
           @locations[:root]
         end
@@ -64,10 +63,10 @@ module Sinatra
     end
 
     # Returns URL path with query instructions.
-    def query_path_to(*args)
+    def build_path_to(script_name = nil, *args)
       args.compact!
       query  = args.pop if args.last.kind_of?(Hash)
-      path   = map_path_to(*args)
+      path   = map_path_to(script_name, *args)
       path  << "?" << Rack::Utils::build_query(query) if query
       path
     end
@@ -77,16 +76,22 @@ module Sinatra
     # Check arguments. If argument is a symbol and exist map path before
     # setted, then return path mapped by symbol name.
     def map_path_to(*args)
-      path_mapped(*locations_get_from(*args))
+      script_name = args.shift if args.first.to_s =~ /\/\w.*/
+      path_mapped(script_name, *locations_get_from(*args))
     end
 
     # Returns all paths mapped by root path in prefix.
-    def path_mapped(*args)
-      !args.empty? ? cleanup_paths("/#{@locations[:root]}/#{args.join('/')}") : @locations[:root]
+    def path_mapped(script_name, *args)
+      if !args.empty?
+        cleanup_paths("/#{script_name}/#{@locations[:root]}/#{args.join('/')}")
+      else
+        cleanup_paths("/#{script_name}/#{@locations[:root]}")
+      end
     end
 
     # Get paths from location maps.
     def locations_get_from(*args)
+      args.delete(:root)
       args.collect do |path|
         @locations.has_key?(path) ? @locations[path] : path
       end
@@ -94,6 +99,7 @@ module Sinatra
 
     # Clean all duplicated slashes.
     def cleanup_paths(*paths)
+      #.gsub(%r{#{@locations[:root]}/#{@locations[:root]}}, @locations[:root])
       paths.join('/').gsub(/[\/]{2,}/,'/')
     end
 

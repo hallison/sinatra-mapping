@@ -1,5 +1,9 @@
 = Changes
 
+[1.0.4 - July 2009]
+  * Error in root path without application/script name has been fixed.
+  * Helper for mapping has been registered automatically.
+
 [1.0.3 - July 2009]
   * Error in root path without script name in environment have been fixed.
 
