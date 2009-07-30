@@ -74,7 +74,11 @@ class AppForTest < Sinatra::Base
   end
 
   get search_path do
-    "#{title_path :search}:#{path_to :search, :keywords => 'ruby'}"
+    <<-end_content.gsub(/^      /,'')
+      #{title_path :search}:#{path_to :search, :keywords => 'ruby'}
+      #{link_to "Search", :search, :title => 'Search'}
+      #{link_to "Search", :search, :title => 'Search', :keywords => 'ruby'}
+    end_content
   end
 
 end
@@ -188,7 +192,9 @@ class TestMapping < Test::Unit::TestCase
     get "#{app.search_path}?keywords=ruby" do |response|
       assert response.ok?
       assert_equal "http://example.org#{@locations[:search_path]}?keywords=ruby", last_request.url
-      assert_equal "Find articles:#{@locations[:search_path]}?keywords=ruby", response.body
+      assert_equal "Find articles:#{@locations[:search_path]}?keywords=ruby", response.body.split("\n")[0]
+      assert_equal "<a href=\"#{@locations[:search_path]}\" title=\"Search\">Search</a>", response.body.split("\n")[1]
+      assert_equal "<a href=\"#{@locations[:search_path]}?keywords=ruby\" title=\"Search\">Search</a>", response.body.split("\n")[2]
     end
   end
 

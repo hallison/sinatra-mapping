@@ -1,5 +1,11 @@
 = Changes
 
+[1.0.5 - July 2009]
+  * Fixes in the HTML attributes into helper method for link attributes.
+  * Fixes in the map path method which check script name in environment.
+  * Improvements helper methods.
+  * Updates in documentation.
+
 [1.0.4 - July 2009]
   * Error in root path without application/script name has been fixed.
   * Helper for mapping has been registered automatically.

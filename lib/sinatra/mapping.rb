@@ -52,10 +52,11 @@ module Sinatra
     #   mapping:
     #     root: tasks
     #     status: changes
-    #   # In Web application.
-    #   class WebApp << Sinatra::Base
-    #     mapping YAML.load_file("settings.yml")[:mapping]
-    #   end
+    #
+    #   # In Sinatra application.
+    #   mapping YAML.load_file("settings.yml")[:mapping]
+    #   # root_path   # /tasks
+    #   # status_path # /tasks/changes
     def mapping(hash)
       hash.each do |name, path|
         map name, path
@@ -63,11 +64,13 @@ module Sinatra
     end
 
     # Returns URL path with query instructions.
+    # This method has been extracted from
+    # http://wiki.github.com/sinatra/sinatra/howto-generate-links.
     def build_path_to(script_name = nil, *args)
       args.compact!
-      query  = args.pop if args.last.kind_of?(Hash)
-      path   = map_path_to(script_name, *args)
-      path  << "?" << Rack::Utils::build_query(query) if query
+      query = args.pop if args.last.kind_of?(Hash)
+      path  = map_path_to(script_name, *args)
+      path << "?" << Rack::Utils::build_query(query) if query
       path
     end
 
@@ -76,17 +79,14 @@ module Sinatra
     # Check arguments. If argument is a symbol and exist map path before
     # setted, then return path mapped by symbol name.
     def map_path_to(*args)
-      script_name = args.shift if args.first.to_s =~ /\/\w.*/
+      script_name = args.shift if args.first.to_s =~ /^\/\w.*/
       path_mapped(script_name, *locations_get_from(*args))
     end
 
     # Returns all paths mapped by root path in prefix.
     def path_mapped(script_name, *args)
-      if !args.empty?
-        cleanup_paths("/#{script_name}/#{@locations[:root]}/#{args.join('/')}")
-      else
-        cleanup_paths("/#{script_name}/#{@locations[:root]}")
-      end
+      return cleanup_paths("/#{script_name}/#{@locations[:root]}") if args.empty?
+      cleanup_paths("/#{script_name}/#{@locations[:root]}/#{args.join('/')}")
     end
 
     # Get paths from location maps.
