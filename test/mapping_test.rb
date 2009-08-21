@@ -18,12 +18,13 @@ class AppForTest < Sinatra::Base
   register Sinatra::Mapping
   helpers  Sinatra::MappingHelpers
 
-  map :root   # root_path    => /
-  map :about  # about_path   => /about
+  map :root,  "blog"   # root_path    => /blog/
+  map :about           # about_path   => /blog/about
 
-  mapping :posts   => "articles",         # posts_path   => /articles
-          :archive => "archive/articles", # archive_path => /archive/articles
-          :search  => "find-articles"     # search_path  => /find-articles
+  mapping :posts   => "articles",         # posts_path   => /blog/articles
+          :archive => "archive/articles", # archive_path => /blog/archive/articles
+          :search  => "find-articles",    # search_path  => /blog/find-articles
+          :drafts  => "unpublished"       # drafts_path  => /blog/unpublished
 
   before do
     @date = Date.today
@@ -81,6 +82,13 @@ class AppForTest < Sinatra::Base
     end_content
   end
 
+  get drafts_path do
+    <<-end_content.gsub(/^      /,'')
+      #{title_path :drafts}:#{path_to [:drafts, :posts]}
+      #{link_to "Unpublished", :drafts, :posts, :title => 'Unpublished'}
+    end_content
+  end
+
 end
 
 class TestMapping < Test::Unit::TestCase
@@ -90,11 +98,12 @@ class TestMapping < Test::Unit::TestCase
   def setup
     @date      = Date.today
     @locations = {
-      :root_path    => "/",
-      :posts_path   => "/articles",
-      :archive_path => "/archive/articles",
-      :about_path   => "/about",
-      :search_path  => "/find-articles"
+      :root_path    => "/blog/",
+      :posts_path   => "/blog/articles",
+      :archive_path => "/blog/archive/articles",
+      :about_path   => "/blog/about",
+      :search_path  => "/blog/find-articles",
+      :drafts_path  => "/blog/unpublished"
     }
   end
 
@@ -114,7 +123,7 @@ class TestMapping < Test::Unit::TestCase
     get app.root_path do |response|
       assert response.ok?
       assert_equal "http://example.org#{@locations[:root_path]}", last_request.url
-      assert_equal "Path:#{@locations[:root_path]}", response.body
+      assert_equal "Blog path:#{@locations[:root_path]}", response.body
     end
   end
 
@@ -198,5 +207,12 @@ class TestMapping < Test::Unit::TestCase
     end
   end
 
+  def test_should_check_path_method_with_array_params
+    get "#{app.drafts_path}" do |response|
+      assert response.ok?
+      assert_equal "Unpublished:#{@locations[:drafts_path]}/articles", response.body.split("\n")[0]
+      assert_equal "<a href=\"#{@locations[:drafts_path]}/articles\" title=\"Unpublished\">Unpublished</a>", response.body.split("\n")[1]
+    end
+  end
 end
 

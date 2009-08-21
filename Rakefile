@@ -40,14 +40,16 @@ namespace :version do
   end
 end
 
-Rake::TestTask.new
+Rake::TestTask.new :test do |spec|
+  spec.test_files = FileList["test/*_test.rb"]
+end
 
 Rake::GemPackageTask.new(@spec) do |pkg|
   pkg.need_tar_bz2 = true
 end
 
-Rake::RDocTask.new("doc") do |rdoc|
-  rdoc.title    = "Sinatra::Mapping"
+Rake::RDocTask.new("doc:api") do |rdoc|
+  rdoc.title    = "Sinatra::Mapping - API Documentation"
   rdoc.main     = "README.rdoc"
   rdoc.options  = [ '-SHN', '-f', 'darkfish' ]
   rdoc.rdoc_dir = 'doc'

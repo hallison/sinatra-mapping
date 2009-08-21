@@ -1,7 +1,7 @@
 --- 
 :release: 
-:date: 2009-07-30
-:cycle: Release
+:date: 2009-08-21
+:cycle: Stable release
 :major: 1
 :minor: 0
-:patch: 5
+:patch: 6

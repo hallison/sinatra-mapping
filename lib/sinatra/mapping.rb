@@ -91,9 +91,10 @@ module Sinatra
 
     # Get paths from location maps.
     def locations_get_from(*args)
-      args.delete(:root)
-      args.collect do |path|
-        @locations.has_key?(path) ? @locations[path] : path
+      args.flatten.reject do |path|
+        path == :root
+      end.collect do |path|
+        @locations[path] || path
       end
     end
 

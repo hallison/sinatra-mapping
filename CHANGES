@@ -1,45 +1,50 @@
 = Changes
 
-[1.0.5 - July 2009]
+[1.0.6 - 2009-08-21]
+  * Fixes in the method for build path mapped.
+  * Updates in documentation.
+  * Tests have been fixed.
+
+[1.0.5 - 2009-07-30]
   * Fixes in the HTML attributes into helper method for link attributes.
   * Fixes in the map path method which check script name in environment.
   * Improvements helper methods.
   * Updates in documentation.
 
-[1.0.4 - July 2009]
+[1.0.4 - 2009-07-29]
   * Error in root path without application/script name has been fixed.
   * Helper for mapping has been registered automatically.
 
-[1.0.3 - July 2009]
+[1.0.3 - 2009-07-27]
   * Error in root path without script name in environment have been fixed.
 
-[1.0.2 - July 2009]
+[1.0.2 - 2009-07-21]
   * The method for creates paths with parameters has been fixed.
 
   * RDoc has been updated.
 
-[1.0.1 - July 2009]
+[1.0.1 - 2009-07-21]
   * The method for creates links has been fixed.
 
-[1.0.0 - July 2009]
+[1.0.0 - 2009-07-21]
   * Added new helper method for creates links.
 
   * All features for first release have been finished.
 
-[0.2.1 - July 2009]
+[0.2.1 - 2009-07-20]
   * The helper method for show title path has been fixed.
 
   * Added new task for show the current version.
 
-[0.2.0 - July 2009]
+[0.2.0 - 2009-07-18]
   * New method for mapping of paths has been added.
 
-[0.1.1 - July 2009]
+[0.1.1 - 2009-07-17]
   * New helper methods have been added.
 
   * Improvements in map method.
 
-[0.1.0 - July 2009]
+[0.1.0 - 2009-07-16]
   * This version has been extracted from
     {Postview}[http://postview.rubyforge.org] project.
 
