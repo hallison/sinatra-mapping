@@ -1,5 +1,14 @@
 = Changes
 
+[1.1.1 - not released]
+  * The mapping methods works in classic application.
+
+[1.1.0 - 2009-08-25]
+  * Added suffix "/?" in all paths when no arguments.
+  * The helpers are registered automatically.
+  * Updates in documentation.
+  * Tests have been fixed.
+
 [1.0.6 - 2009-08-21]
   * Fixes in the method for build path mapped.
   * Updates in documentation.
