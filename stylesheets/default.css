@@ -108,6 +108,11 @@ h1 {
   border-top: 2px solid #999;
 }
 
+#footer p {
+  margin: 0px;
+  padding: 0px;
+}
+
 .loading {
   text-align: center;
 }
