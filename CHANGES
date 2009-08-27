@@ -1,7 +1,9 @@
 = Changes
 
-[1.1.1 - not released]
+[1.2.0 - 2009-09-22]
   * The mapping methods works in classic application.
+  * Updates in documentation.
+  * All tests have been fixed.
 
 [1.1.0 - 2009-08-25]
   * Added suffix "/?" in all paths when no arguments.

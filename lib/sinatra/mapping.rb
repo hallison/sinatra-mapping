@@ -22,8 +22,8 @@ module Mapping
   #
   # If name is equal :root, then returns path ended by slash "/".
   #
-  #   map :root,    "tasks"       # => /tasks/
-  #   map :changes, "last-changes # => /tasks/last-changes
+  #   map :root,    "tasks"       #=> /tasks/
+  #   map :changes, "last-changes #=> /tasks/last-changes
   def map(name, path = nil)
     @locations ||= {}
     if name.to_sym == :root
@@ -37,12 +37,14 @@ module Mapping
         map_path_to(@locations[name.to_sym], *paths << "/?")
       end
     end
+    Delegator.delegate "#{name}_path"
   end
 
   # Auto mapping from a hash. This method is very useful.
   # Example:
   #
-  #   # In Web application.
+  # In Web application:
+  #
   #   class WebApp << Sinatra::Base
   #     mapping :root   => "tasks",   # /tasks
   #             :status => "changes"  # /tasks/changes
@@ -50,20 +52,27 @@ module Mapping
   #
   # Or, it's possible use from configuration file.
   #
-  #   # YAML file "settings.yml".
-  #   mapping:
-  #     root: tasks
-  #     status: changes
+  #   # YAML file "mapping.yml".
+  #   root: tasks
+  #   status: changes
   #
   #   # In Sinatra application.
-  #   mapping YAML.load_file("settings.yml")[:mapping]
-  #   # root_path   # /tasks
-  #   # status_path # /tasks/changes
+  #
+  #   mapping YAML.load_file("mapping.yml")
+  #   #=> root_path   # /tasks
+  #   #=> status_path # /tasks/changes
   def mapping(hash)
     hash.each do |name, path|
       map name, path
     end
   end
+
+  # Register automatically all helpers in base application.
+  def self.registered(app)
+    app.helpers Mapping::Helpers
+  end
+
+private
 
   # Returns URL path with query instructions.
   # This method has been extracted from
@@ -75,13 +84,6 @@ module Mapping
     path << "?" << Rack::Utils::build_query(query) if query
     path
   end
-
-  # Register automatically all helpers in base application.
-  def self.registered(app)
-    app.helpers Mapping::Helpers
-  end
-
-private
 
   # Check arguments. If argument is a symbol and exist map path before
   # setted, then return path mapped by symbol name.
@@ -111,29 +113,31 @@ private
     paths.join('/').gsub(/[\/]{2,}/,'/')
   end
 
+  # Copyright (c) 2009 Hallison Batista
+  #
   # This module contains several helper methods for paths written using 
-  # {map}[:link:./Sinatra/Mapping.html#map] method.
+  # +map+ method.
   module Helpers
 
     # Creates a title using a path mapped. Otherwise, returns just arguments
     # joined by spaces and capitalised.
     #
-    #   # In Sinatra application
+    # In Sinatra application:
     #
     #   map :posts,   "articles"
     #   map :tags,    "labels"
     #   map :archive, "archive/articles"
     #
-    #   # In views
+    # In views:
     #
     #   <%=title_path :posts%>
-    #   # => "Articles"
+    #   #=> "Articles"
     #
     #   <%=title_path :tags%>
-    #   # => "Labels"
+    #   #=> "Labels"
     #
     #   <%=title_path :archive%>
-    #   # => "Archive articles"
+    #   #=> "Archive articles"
     def title_path(path, *args)
       title = (options.locations[path] || path).to_s.gsub('/',' ').strip
       title.gsub!(/\W/,' ') # Cleanup
@@ -143,7 +147,7 @@ private
     # Creates anchor links for name and extract path and HTML options from
     # arguments. Example:
     #
-    #   # In Sinatra application, add a map.
+    # In Sinatra application, add a map.
     #
     #   map :tasks,  "tasks"
     #   map :status, "tasks/status"
@@ -156,13 +160,13 @@ private
     #     erb :status, :locals => { :status => "finished" }
     #   end
     #
-    #   # In status view, add a link to status map.
+    # In status view, add a link to status map.
     #
     #   <%= link_to "All finished", :status, status %>
-    #   # => <a href="/tasks/status/finished">All finished</a>
+    #   #=> <a href="/tasks/status/finished">All finished</a>
     #
     #   <%= link_to "All finished", :status, :name => status %>
-    #   # => <a href="/tasks/status?name=finished">All finished</a>
+    #   #=> <a href="/tasks/status?name=finished">All finished</a>
     def link_to(name = nil, *args)
       options = args.last.kind_of?(Hash) ? args.pop : {}
       url     = args.shift if args.first.to_s =~ /^\w.*?:/
@@ -172,17 +176,17 @@ private
 
     # Returns all paths with query parameters. Example:
     #
-    #   # In Sinatra application:
+    # In Sinatra application:
     #
     #   map :post, "articles"
     #   map :tags, "labels"
     #
-    #   # Use the following instructions:
+    # Use the following instructions:
     #
     #   path_to :tags, "ruby", :posts
-    #   # => "/labels/ruby/articles"
+    #   #=> "/labels/ruby/articles"
     def path_to(*args)
-      options.build_path_to(env['SCRIPT_NAME'], *args)
+      self.class.send(:build_path_to, env['SCRIPT_NAME'], *args)
     end
 
   private

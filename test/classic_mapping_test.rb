@@ -4,9 +4,9 @@ require 'rubygems'
 require 'test/unit'
 require 'rack/test'
 
-require 'test/fixtures/modular_application'
+require 'test/fixtures/classic_application'
 
-class ModularMappingTest < Test::Unit::TestCase
+class ClassicMappingTest < Test::Unit::TestCase
 
   include Rack::Test::Methods
 
@@ -31,7 +31,7 @@ class ModularMappingTest < Test::Unit::TestCase
   end
 
   def app
-    @app = ::ModularApplication
+    @app = Sinatra::Application
     @app.set :environment, :test
     @app
   end

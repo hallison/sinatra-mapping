@@ -1,7 +1,12 @@
-require 'rdoc'
+begin
+  require 'hanna/rdoctask'
+rescue LoadError
+  require 'rdoc'
+  require 'rake/rdoctask'
+end
+
 require 'rake/testtask'
 require 'rake/gempackagetask'
-require 'rake/rdoctask'
 load    'sinatra-mapping.gemspec'
 
 def current_version(file = "VERSION")
@@ -48,16 +53,17 @@ Rake::GemPackageTask.new(@spec) do |pkg|
   pkg.need_tar_bz2 = true
 end
 
+desc "Generate RDoc API documentation."
 Rake::RDocTask.new("doc:api") do |rdoc|
-  rdoc.title    = "Sinatra::Mapping - API Documentation"
-  rdoc.main     = "README.rdoc"
-  rdoc.options  = [ '-SHN', '-f', 'darkfish' ]
-  rdoc.rdoc_dir = 'doc'
-  rdoc.rdoc_files.include(
-    "CHANGES",
-    "LICENSE",
-    "README.rdoc",
-    "lib/**/*.rb"
-  )
+  rdoc.title    = %q{Sinatra::Mapping - API Documentation}
+  rdoc.main     = %q{README.rdoc}
+  rdoc.options  = %w{--line-numbers --show-hash}
+  rdoc.rdoc_dir = %q{doc/api}
+  rdoc.rdoc_files.include %w{
+    CHANGES
+    LICENSE
+    README.rdoc
+    lib/**/*.rb
+  }
 end
 

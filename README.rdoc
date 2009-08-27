@@ -2,9 +2,9 @@
 
 Map easily URLs in your Web applications.
 
+* {Homepage}[http://sinatra-mapping.rubyforge.org/]
 * {Repository}[http://github.com/hallison/sinatra-mapping]
 * {Project}[http://rubyforge.org/projects/sinatra-mapping]
-* {Documentation}[:link:Sinatra/Mapping.html]
 * {Issues}[http://github.com/hallison/sinatra-mapping/issues]
 
 The extension Sinatra::Mapping is a minimal module that is useful for
@@ -12,6 +12,7 @@ create map names for {Ruby}[http://www.ruby-lang.org]
 {Sinatra}[http://www.sinatrarb.com] web applications.
 
 == Getting start
+
 Install stable version gem from {RubyForge.org}[http://www.rubyforge.org/]:
 
   gem install sinatra-mapping
@@ -42,127 +43,113 @@ Sinatra implements REST routes:
 
 For improve this routes use extension by registered method in the main
 source of application. To better understand, copy and paste the following
-example in {Ruby}[http://www.ruby-lang.org] source file +webfoo.rb+:
+example in {Ruby}[http://www.ruby-lang.org] source file +weblog.rb+:
 
   #!/usr/bin/env ruby
-
   require 'rubygems'
   require 'sinatra'
-  require 'sinatra/mapping'
-  require 'sinatra/mapping_helpers'
+  require 'sinatra/mapping' # only this line for use mapping!
 
-  class Sinatra::Application
+  map :root,    "blog"    # /blog/
+  map :entries, "posts"   # /blog/posts
+  map :tags,    "labels"  # /blog/labels
 
-    register Sinatra::Mapping
-    helpers  Sinatra::MappingHelpers
+  mapping :entry          => "posts/:entry_id",           # /blog/posts/id-for-post
+          :entry_comments => "posts/:entry_id/comments",  # /blog/posts/id-for-post/comments
+          :tagged_entries => "labels/:tag_id/entries"     # /blog/labels/id-for-tag/entries
 
-    map :root,    "blog"    # /blog/
-    map :entries, "posts"   # /blog/posts
-    map :tags,    "labels"  # /blog/labels
+  # /blog/
+  get root_path do
+    <<-end_content
+      <h1>Welcome to Foo Web Application</h1>
+      <ul>
+        <li>#{link_to title_path(:entries), :entries, :title => title_path(:entries)}</li>
+        <li>#{link_to title_path(:tags),    :tags,    :title => title_path(:tags)}</li>
+      </ul>
+    end_content
+  end
 
-    mapping :entry          => "posts/:entry_id",           # /blog/posts/id-for-post
-            :entry_comments => "posts/:entry_id/comments",  # /blog/posts/id-for-post/comments
-            :tagged_entries => "labels/:tag_id/entries"     # /blog/labels/id-for-tag/entries
+  # /blog/entries
+  get entries_path do
+    <<-end_content
+      <h1>Welcome to Foo Web Application</h1>
+      <h2>#{title_path(:entries)}</h2>
+      <ul>
+        <li>#{link_to "Testing new entry ...", :entries, "testing-new-entry"}</li>
+        <li>#{link_to "Testing old entry ...", :entries, "testing-old-entry"}</li>
+      </ul>
+      <p>
+        #{link_to "Back", :root}
+      </p>
+    end_content
+  end
 
-    # /blog/
-    get root_path do
-      <<-end_content
-        <h1>Welcome to Foo Web Application</h1>
-        <ul>
-          <li>#{link_to title_path(:entries), :entries, :title => title_path(:entries)}</li>
-          <li>#{link_to title_path(:tags),    :tags,    :title => title_path(:tags)}</li>
-        </ul>
-      end_content
-    end
+  # /blog/labels/tag-id-for-show-content
+  get tags_path do
+    <<-end_content
+      <h1>Welcome to Foo Web Application</h1>
+      <h2>#{title_path(:tags)}</h2>
+      <ul>
+        <li>#{link_to "Ruby",    :tags, "ruby",    "entries"}</li>
+        <li>#{link_to "Sinatra", :tags, "sinatra", "entries"}</li>
+        <li>#{link_to "Mapping", :tags, "mapping", "entries"}</li>
+      </ul>
+      <p>
+        #{link_to "Back", :root}
+      </p>
+    end_content
+  end
 
-    # /blog/entries
-    get entries_path do
-      <<-end_content
-        <h1>Welcome to Foo Web Application</h1>
-        <h2>#{title_path(:entries)}</h2>
-        <ul>
-          <li>#{link_to "Testing new entry ...", :entries, "testing-new-entry"}</li>
-          <li>#{link_to "Testing old entry ...", :entries, "testing-old-entry"}</li>
-        </ul>
-        <p>
-          #{link_to "Back", :root}
-        </p>
-      end_content
-    end
+  # /blog/entries/entry-id-for-show-content
+  get entry_path do |entry_id|
+    title = entry_id.gsub('-',' ').capitalize
+    <<-end_content
+      <h1>Welcome to Foo Web Application</h1>
+      <h2>#{title}</h2>
+      <p>
+        It works!
+      </p>
+      <p>
+        #{link_to "Back", :root} | #{link_to "Comments", :entries, entry_id, 'comments'}
+      </p>
+    end_content
+  end
 
-    # /blog/labels/tag-id-for-show-content
-    get tags_path do
-      <<-end_content
-        <h1>Welcome to Foo Web Application</h1>
-        <h2>#{title_path(:tags)}</h2>
-        <ul>
-          <li>#{link_to "Ruby",    :tags, "ruby",    "entries"}</li>
-          <li>#{link_to "Sinatra", :tags, "sinatra", "entries"}</li>
-          <li>#{link_to "Mapping", :tags, "mapping", "entries"}</li>
-        </ul>
-        <p>
-          #{link_to "Back", :root}
-        </p>
-      end_content
-    end
+  # /blog/entries/entry-id-for-show-content/comments
+  get entry_comments_path do |entry_id|
+    title = entry_id.gsub('-',' ').capitalize
+    <<-end_content
+      <h1>Welcome to Foo Web Application</h1>
+      <h2>#{title}</h2>
+      <p>
+        It works and show comments for "#{title}".
+      </p>
+      <p>
+        #{link_to "Back", :root}
+      </p>
+    end_content
+  end
 
-    # /blog/entries/entry-id-for-show-content
-    get entry_path do |entry_id|
-      title = entry_id.gsub('-',' ').capitalize
-      <<-end_content
-        <h1>Welcome to Foo Web Application</h1>
-        <h2>#{title}</h2>
-        <p>
-          It works!
-        </p>
-        <p>
-          #{link_to "Back", :root} | #{link_to "Comments", :entries, entry_id, 'comments'}
-        </p>
-      end_content
-    end
-
-    # /blog/entries/entry-id-for-show-content/comments
-    get entry_comments_path do |entry_id|
-      title = entry_id.gsub('-',' ').capitalize
-      <<-end_content
-        <h1>Welcome to Foo Web Application</h1>
-        <h2>#{title}</h2>
-        <p>
-          It works and show comments for "#{title}".
-        </p>
-        <p>
-          #{link_to "Back", :root}
-        </p>
-      end_content
-    end
-
-    get tagged_entries_path do |tag_id|
-      <<-end_content
-        <h1>Welcome to Foo Web Application</h1>
-        <h2>#{tag_id.capitalize}</h2>
-        <p>
-          It works and show all entries tagged with "#{tag_id}".
-        </p>
-        <p>
-          #{link_to "Back", :root}
-        </p>
-      end_content
-    end
-
+  get tagged_entries_path do |tag_id|
+    <<-end_content
+      <h1>Welcome to Foo Web Application</h1>
+      <h2>#{tag_id.capitalize}</h2>
+      <p>
+        It works and show all entries tagged with "#{tag_id}".
+      </p>
+      <p>
+        #{link_to "Back", :root}
+      </p>
+    end_content
   end
 
 Run:
 
-  $ ruby webfoo.rb -p 3000
+  $ ruby weblog.rb -p 3000
 
 Open Web browser http://localhost:3000/blog/ and look ... it works!
-
-== More informations
-
-* See the {changes}[:link:CHANGES.html] for understand the goals of
-  that release version.
-* {License}[:link:LICENSE.html]
 
 == Copyright
 
 :include:LICENSE
+
