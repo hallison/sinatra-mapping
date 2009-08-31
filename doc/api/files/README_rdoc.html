@@ -31,7 +31,7 @@
         </div>
         <div class='last-update'>
           Last Update:
-          <span class='datetime'>Thu Aug 27 10:18:46 -0400 2009</span>
+          <span class='datetime'>Mon Aug 31 10:27:40 -0400 2009</span>
         </div>
       </div>
       <div id='content'>
@@ -42,13 +42,13 @@
             Map easily URLs in your Web applications.
             </p>
             <ul>
+            <li>{Homepage}[:link:/]
+            
+            </li>
             <li><a href="http://github.com/hallison/sinatra-mapping">Repository</a>
             
             </li>
             <li><a href="http://rubyforge.org/projects/sinatra-mapping">Project</a>
-            
-            </li>
-            <li><a href="../Sinatra/Mapping.html">Documentation</a>
             
             </li>
             <li><a href="http://github.com/hallison/sinatra-mapping/issues">Issues</a>
@@ -84,7 +84,7 @@
             example in <a href="http://www.ruby-lang.org">Ruby</a> source file
             <tt>webfoo.rb</tt>:
             </p>
-            <pre>#!/usr/bin/env ruby&#x000A;&#x000A;require 'rubygems'&#x000A;require 'sinatra'&#x000A;require 'sinatra/mapping'&#x000A;require 'sinatra/mapping_helpers'&#x000A;&#x000A;class Sinatra::Application&#x000A;&#x000A;  register Sinatra::Mapping&#x000A;  helpers  Sinatra::MappingHelpers&#x000A;&#x000A;  map :root,    &quot;blog&quot;    # /blog/&#x000A;  map :entries, &quot;posts&quot;   # /blog/posts&#x000A;  map :tags,    &quot;labels&quot;  # /blog/labels&#x000A;&#x000A;  mapping :entry          =&gt; &quot;posts/:entry_id&quot;,           # /blog/posts/id-for-post&#x000A;          :entry_comments =&gt; &quot;posts/:entry_id/comments&quot;,  # /blog/posts/id-for-post/comments&#x000A;          :tagged_entries =&gt; &quot;labels/:tag_id/entries&quot;     # /blog/labels/id-for-tag/entries&#x000A;&#x000A;  # /blog/&#x000A;  get root_path do&#x000A;    &lt;&lt;-end_content&#x000A;      &lt;h1&gt;Welcome to Foo Web Application&lt;/h1&gt;&#x000A;      &lt;ul&gt;&#x000A;        &lt;li&gt;#{link_to title_path(:entries), :entries, :title =&gt; title_path(:entries)}&lt;/li&gt;&#x000A;        &lt;li&gt;#{link_to title_path(:tags),    :tags,    :title =&gt; title_path(:tags)}&lt;/li&gt;&#x000A;      &lt;/ul&gt;&#x000A;    end_content&#x000A;  end&#x000A;&#x000A;  # /blog/entries&#x000A;  get entries_path do&#x000A;    &lt;&lt;-end_content&#x000A;      &lt;h1&gt;Welcome to Foo Web Application&lt;/h1&gt;&#x000A;      &lt;h2&gt;#{title_path(:entries)}&lt;/h2&gt;&#x000A;      &lt;ul&gt;&#x000A;        &lt;li&gt;#{link_to &quot;Testing new entry ...&quot;, :entries, &quot;testing-new-entry&quot;}&lt;/li&gt;&#x000A;        &lt;li&gt;#{link_to &quot;Testing old entry ...&quot;, :entries, &quot;testing-old-entry&quot;}&lt;/li&gt;&#x000A;      &lt;/ul&gt;&#x000A;      &lt;p&gt;&#x000A;        #{link_to &quot;Back&quot;, :root}&#x000A;      &lt;/p&gt;&#x000A;    end_content&#x000A;  end&#x000A;&#x000A;  # /blog/labels/tag-id-for-show-content&#x000A;  get tags_path do&#x000A;    &lt;&lt;-end_content&#x000A;      &lt;h1&gt;Welcome to Foo Web Application&lt;/h1&gt;&#x000A;      &lt;h2&gt;#{title_path(:tags)}&lt;/h2&gt;&#x000A;      &lt;ul&gt;&#x000A;        &lt;li&gt;#{link_to &quot;Ruby&quot;,    :tags, &quot;ruby&quot;,    &quot;entries&quot;}&lt;/li&gt;&#x000A;        &lt;li&gt;#{link_to &quot;Sinatra&quot;, :tags, &quot;sinatra&quot;, &quot;entries&quot;}&lt;/li&gt;&#x000A;        &lt;li&gt;#{link_to &quot;Mapping&quot;, :tags, &quot;mapping&quot;, &quot;entries&quot;}&lt;/li&gt;&#x000A;      &lt;/ul&gt;&#x000A;      &lt;p&gt;&#x000A;        #{link_to &quot;Back&quot;, :root}&#x000A;      &lt;/p&gt;&#x000A;    end_content&#x000A;  end&#x000A;&#x000A;  # /blog/entries/entry-id-for-show-content&#x000A;  get entry_path do |entry_id|&#x000A;    title = entry_id.gsub('-',' ').capitalize&#x000A;    &lt;&lt;-end_content&#x000A;      &lt;h1&gt;Welcome to Foo Web Application&lt;/h1&gt;&#x000A;      &lt;h2&gt;#{title}&lt;/h2&gt;&#x000A;      &lt;p&gt;&#x000A;        It works!&#x000A;      &lt;/p&gt;&#x000A;      &lt;p&gt;&#x000A;        #{link_to &quot;Back&quot;, :root} | #{link_to &quot;Comments&quot;, :entries, entry_id, 'comments'}&#x000A;      &lt;/p&gt;&#x000A;    end_content&#x000A;  end&#x000A;&#x000A;  # /blog/entries/entry-id-for-show-content/comments&#x000A;  get entry_comments_path do |entry_id|&#x000A;    title = entry_id.gsub('-',' ').capitalize&#x000A;    &lt;&lt;-end_content&#x000A;      &lt;h1&gt;Welcome to Foo Web Application&lt;/h1&gt;&#x000A;      &lt;h2&gt;#{title}&lt;/h2&gt;&#x000A;      &lt;p&gt;&#x000A;        It works and show comments for &quot;#{title}&quot;.&#x000A;      &lt;/p&gt;&#x000A;      &lt;p&gt;&#x000A;        #{link_to &quot;Back&quot;, :root}&#x000A;      &lt;/p&gt;&#x000A;    end_content&#x000A;  end&#x000A;&#x000A;  get tagged_entries_path do |tag_id|&#x000A;    &lt;&lt;-end_content&#x000A;      &lt;h1&gt;Welcome to Foo Web Application&lt;/h1&gt;&#x000A;      &lt;h2&gt;#{tag_id.capitalize}&lt;/h2&gt;&#x000A;      &lt;p&gt;&#x000A;        It works and show all entries tagged with &quot;#{tag_id}&quot;.&#x000A;      &lt;/p&gt;&#x000A;      &lt;p&gt;&#x000A;        #{link_to &quot;Back&quot;, :root}&#x000A;      &lt;/p&gt;&#x000A;    end_content&#x000A;  end&#x000A;&#x000A;end</pre>
+            <pre>#!/usr/bin/env ruby&#x000A;require 'rubygems'&#x000A;require 'sinatra'&#x000A;require 'sinatra/mapping' # only this line for use mapping!&#x000A;&#x000A;class Sinatra::Application&#x000A;&#x000A;  map :root,    &quot;blog&quot;    # /blog/&#x000A;  map :entries, &quot;posts&quot;   # /blog/posts&#x000A;  map :tags,    &quot;labels&quot;  # /blog/labels&#x000A;&#x000A;  mapping :entry          =&gt; &quot;posts/:entry_id&quot;,           # /blog/posts/id-for-post&#x000A;          :entry_comments =&gt; &quot;posts/:entry_id/comments&quot;,  # /blog/posts/id-for-post/comments&#x000A;          :tagged_entries =&gt; &quot;labels/:tag_id/entries&quot;     # /blog/labels/id-for-tag/entries&#x000A;&#x000A;  # /blog/&#x000A;  get root_path do&#x000A;    &lt;&lt;-end_content&#x000A;      &lt;h1&gt;Welcome to Foo Web Application&lt;/h1&gt;&#x000A;      &lt;ul&gt;&#x000A;        &lt;li&gt;#{link_to title_path(:entries), :entries, :title =&gt; title_path(:entries)}&lt;/li&gt;&#x000A;        &lt;li&gt;#{link_to title_path(:tags),    :tags,    :title =&gt; title_path(:tags)}&lt;/li&gt;&#x000A;      &lt;/ul&gt;&#x000A;    end_content&#x000A;  end&#x000A;&#x000A;  # /blog/entries&#x000A;  get entries_path do&#x000A;    &lt;&lt;-end_content&#x000A;      &lt;h1&gt;Welcome to Foo Web Application&lt;/h1&gt;&#x000A;      &lt;h2&gt;#{title_path(:entries)}&lt;/h2&gt;&#x000A;      &lt;ul&gt;&#x000A;        &lt;li&gt;#{link_to &quot;Testing new entry ...&quot;, :entries, &quot;testing-new-entry&quot;}&lt;/li&gt;&#x000A;        &lt;li&gt;#{link_to &quot;Testing old entry ...&quot;, :entries, &quot;testing-old-entry&quot;}&lt;/li&gt;&#x000A;      &lt;/ul&gt;&#x000A;      &lt;p&gt;&#x000A;        #{link_to &quot;Back&quot;, :root}&#x000A;      &lt;/p&gt;&#x000A;    end_content&#x000A;  end&#x000A;&#x000A;  # /blog/labels/tag-id-for-show-content&#x000A;  get tags_path do&#x000A;    &lt;&lt;-end_content&#x000A;      &lt;h1&gt;Welcome to Foo Web Application&lt;/h1&gt;&#x000A;      &lt;h2&gt;#{title_path(:tags)}&lt;/h2&gt;&#x000A;      &lt;ul&gt;&#x000A;        &lt;li&gt;#{link_to &quot;Ruby&quot;,    :tags, &quot;ruby&quot;,    &quot;entries&quot;}&lt;/li&gt;&#x000A;        &lt;li&gt;#{link_to &quot;Sinatra&quot;, :tags, &quot;sinatra&quot;, &quot;entries&quot;}&lt;/li&gt;&#x000A;        &lt;li&gt;#{link_to &quot;Mapping&quot;, :tags, &quot;mapping&quot;, &quot;entries&quot;}&lt;/li&gt;&#x000A;      &lt;/ul&gt;&#x000A;      &lt;p&gt;&#x000A;        #{link_to &quot;Back&quot;, :root}&#x000A;      &lt;/p&gt;&#x000A;    end_content&#x000A;  end&#x000A;&#x000A;  # /blog/entries/entry-id-for-show-content&#x000A;  get entry_path do |entry_id|&#x000A;    title = entry_id.gsub('-',' ').capitalize&#x000A;    &lt;&lt;-end_content&#x000A;      &lt;h1&gt;Welcome to Foo Web Application&lt;/h1&gt;&#x000A;      &lt;h2&gt;#{title}&lt;/h2&gt;&#x000A;      &lt;p&gt;&#x000A;        It works!&#x000A;      &lt;/p&gt;&#x000A;      &lt;p&gt;&#x000A;        #{link_to &quot;Back&quot;, :root} | #{link_to &quot;Comments&quot;, :entries, entry_id, 'comments'}&#x000A;      &lt;/p&gt;&#x000A;    end_content&#x000A;  end&#x000A;&#x000A;  # /blog/entries/entry-id-for-show-content/comments&#x000A;  get entry_comments_path do |entry_id|&#x000A;    title = entry_id.gsub('-',' ').capitalize&#x000A;    &lt;&lt;-end_content&#x000A;      &lt;h1&gt;Welcome to Foo Web Application&lt;/h1&gt;&#x000A;      &lt;h2&gt;#{title}&lt;/h2&gt;&#x000A;      &lt;p&gt;&#x000A;        It works and show comments for &quot;#{title}&quot;.&#x000A;      &lt;/p&gt;&#x000A;      &lt;p&gt;&#x000A;        #{link_to &quot;Back&quot;, :root}&#x000A;      &lt;/p&gt;&#x000A;    end_content&#x000A;  end&#x000A;&#x000A;  get tagged_entries_path do |tag_id|&#x000A;    &lt;&lt;-end_content&#x000A;      &lt;h1&gt;Welcome to Foo Web Application&lt;/h1&gt;&#x000A;      &lt;h2&gt;#{tag_id.capitalize}&lt;/h2&gt;&#x000A;      &lt;p&gt;&#x000A;        It works and show all entries tagged with &quot;#{tag_id}&quot;.&#x000A;      &lt;/p&gt;&#x000A;      &lt;p&gt;&#x000A;        #{link_to &quot;Back&quot;, :root}&#x000A;      &lt;/p&gt;&#x000A;    end_content&#x000A;  end&#x000A;&#x000A;end</pre>
             <p>
             Run:
             </p>
@@ -94,16 +94,6 @@
             href="http://localhost:3000/blog/">localhost:3000/blog/</a> and look
             &#8230; it works!
             </p>
-            <h2>More informations</h2>
-            <ul>
-            <li>See the <a href="../CHANGES.html">changes</a> for understand the goals of
-            that release version.
-            
-            </li>
-            <li><a href="../LICENSE.html">License</a>
-            
-            </li>
-            </ul>
             <h2>Copyright</h2>
             <p>
             Copyright &#169; 2009 Hallison Batista
