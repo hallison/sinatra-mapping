@@ -67,3 +67,4 @@ Rake::RDocTask.new("doc:api") do |rdoc|
   }
 end
 
+task :default => :test
