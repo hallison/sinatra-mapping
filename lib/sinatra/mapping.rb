@@ -28,13 +28,17 @@ module Mapping
     @locations ||= {}
     if name.to_sym == :root
       @locations[:root] = cleanup_paths("/#{path}/")
-      metadef "#{name}_path" do |*paths|
-        cleanup_paths("/#{@locations[:root]}/?")
+      self.class.class_eval do
+        define_method "#{name}_path" do |*paths|
+          cleanup_paths("/#{@locations[:root]}/?")
+        end
       end
     else
       @locations[name.to_sym] = cleanup_paths(path || name.to_s)
-      metadef "#{name}_path" do |*paths|
-        map_path_to(@locations[name.to_sym], *paths << "/?")
+      self.class.class_eval do
+        define_method("#{name}_path") do |*paths|
+          map_path_to(@locations[name.to_sym], *paths << "/?")
+        end
       end
     end
     Delegator.delegate "#{name}_path"
@@ -139,7 +143,7 @@ private
     #   <%=title_path :archive%>
     #   #=> "Archive articles"
     def title_path(path, *args)
-      title = (options.locations[path] || path).to_s.gsub('/',' ').strip
+      title = (settings.locations[path] || path).to_s.gsub('/',' ').strip
       title.gsub!(/\W/,' ') # Cleanup
       (args.empty? ? title : "#{title} #{args.join(' ')}").strip.capitalize
     end
@@ -171,7 +175,7 @@ private
       options = args.last.kind_of?(Hash) ? args.pop : {}
       url     = args.shift if args.first.to_s =~ /^\w.*?:/
       args   << extract_query_attributes(options)
-      "<a href=\"#{url || path_to(*args)}\"#{extract_link_attributes(options)}>#{name || url}</a>"
+      "<a href=\"#{url || path_to(*args)}\"#{extract_link_attributes(options).join()}>#{name || url}</a>"
     end
 
     # Returns all paths with query parameters. Example:
