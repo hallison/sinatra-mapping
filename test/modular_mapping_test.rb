@@ -3,7 +3,6 @@ $LOAD_PATH.unshift("#{File.dirname(__FILE__)}/..")
 require 'rubygems'
 require 'test/unit'
 require 'rack/test'
-require 'date'
 
 require 'test/fixtures/modular_application'
 

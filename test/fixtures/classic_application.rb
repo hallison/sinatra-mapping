@@ -16,7 +16,8 @@ map :about           # about_path   => /blog/about
 mapping :posts   => "articles",         # posts_path   => /blog/articles
         :archive => "archive/articles", # archive_path => /blog/archive/articles
         :search  => "find-articles",    # search_path  => /blog/find-articles
-        :drafts  => "unpublished"       # drafts_path  => /blog/unpublished
+        :drafts  => "unpublished",      # drafts_path  => /blog/unpublished
+        :profile => "users/:user_id"    # profile_path  => /user/:user_id
 
 before do
   @date = Date.today
@@ -58,5 +59,11 @@ get drafts_path do
   <<-end_content.gsub(/^    /,'')
     #{title_path :drafts}:#{path_to [:drafts, :posts]}
     #{link_to "Unpublished", :drafts, :posts, :title => 'Unpublished'}
+  end_content
+end
+
+get profile_path do |user_id|
+  <<-end_content.gsub(/^    /,'')
+    "Im user number #{user_id}"
   end_content
 end

@@ -3,7 +3,6 @@ $LOAD_PATH.unshift("#{File.dirname(__FILE__)}/..")
 require 'rubygems'
 require 'test/unit'
 require 'rack/test'
-require 'date'
 
 require 'test/fixtures/classic_application'
 
@@ -19,7 +18,8 @@ class ClassicMappingTest < Test::Unit::TestCase
       :archive_path => "/test/blog/archive/articles",
       :about_path   => "/test/blog/about",
       :search_path  => "/test/blog/find-articles",
-      :drafts_path  => "/test/blog/unpublished"
+      :drafts_path  => "/test/blog/unpublished",
+      :profile_path => "/test/blog/5"
     }
     @root_paths = @link_paths.inject({}) do |hash, (name, path)|
       hash[name] = "#{path}/"
@@ -107,6 +107,13 @@ class ClassicMappingTest < Test::Unit::TestCase
       assert_equal "Unpublished:#{@link_paths[:drafts_path]}/articles", response.body.split("\n")[0]
       body_link = "<a href=\"#{@link_paths[:drafts_path]}/articles\" title=\"Unpublished\">Unpublished</a>"
       assert_equal body_link, response.body.split("\n")[1]
+    end
+  end
+
+  def test_should_return_ok_on_variable_path
+    get app.profile_path(:user_id => 5) do |response|
+      assert response.ok?
+      puts response.body
     end
   end
 end
