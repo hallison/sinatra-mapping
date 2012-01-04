@@ -3,6 +3,7 @@ $LOAD_PATH.unshift("#{File.dirname(__FILE__)}/..")
 require 'rubygems'
 require 'test/unit'
 require 'rack/test'
+require "date"
 
 require 'test/fixtures/classic_application'
 
@@ -19,7 +20,9 @@ class ClassicMappingTest < Test::Unit::TestCase
       :about_path   => "/test/blog/about",
       :search_path  => "/test/blog/find-articles",
       :drafts_path  => "/test/blog/unpublished",
-      :profile_path => "/test/blog/5"
+      :profile_path => "/test/blog/users/:user_id",
+      :user_post_path => "/test/blog/users/:user_id/:post_id",
+      :named_user_post_path => "/test/blog/named_users/:user_id/:post_id"
     }
     @root_paths = @link_paths.inject({}) do |hash, (name, path)|
       hash[name] = "#{path}/"
@@ -113,7 +116,21 @@ class ClassicMappingTest < Test::Unit::TestCase
   def test_should_return_ok_on_variable_path
     get app.profile_path(:user_id => 5) do |response|
       assert response.ok?
-      puts response.body
+      assert_equal "Im user number 5", response.body.split("\n")[0]
+    end
+  end
+
+  def test_should_return_ok_on_multi_variable_path
+    get app.user_post_path(:user_id => 5, :post_id => 4) do |response|
+      assert response.ok?
+      assert_equal "Im post number 4 from user number 5", response.body.split("\n")[0]
+    end
+  end
+
+  def test_should_return_ok_on_multi_variable_path_and_http_params
+    get app.named_user_post_path(:user_id => 5, :post_id => 4), :name => "Juan", :lastname => "Perez" do |response|
+      assert response.ok?
+      assert_equal "Im post number 4 from user number 5 (Juan, Perez)", response.body.split("\n")[0]
     end
   end
 end

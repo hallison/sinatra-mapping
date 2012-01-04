@@ -37,7 +37,7 @@ module Mapping
       @locations[name.to_sym] = cleanup_paths(path || name.to_s)
       self.class.class_eval do
         define_method("#{name}_path") do |*paths|
-          map_path_to(@locations[name.to_sym], *paths << "/?")
+          map_path_to(@locations[name.to_sym], paths << "/?")
         end
       end
     end
@@ -99,7 +99,41 @@ private
   # Returns all paths mapped by root path in prefix.
   def path_mapped(script_name, *args)
     return cleanup_paths("/#{script_name}/#{@locations[:root]}") if args.empty?
-    cleanup_paths("/#{script_name}/#{@locations[:root]}/#{args.join('/')}")
+    a = replace_symbols(script_name, *args)
+    cleanup_paths("/#{script_name}/#{@locations[:root]}/#{a.join('/')}")
+  end
+
+
+  # Replace simbols in url for
+  def replace_symbols(script_name, *args)
+    args_new = []
+    args_copy = args.clone
+
+    url = args[0].clone
+    modifiers = args_copy[1]
+    if modifiers.class == Hash
+      modifiers.delete_if do |key, value|
+        delete = url.include? (":" + key.to_s)
+        if delete
+          url.sub!( (":" + key.to_s), value.to_s )
+        end
+        delete
+      end
+    end
+
+    i = 1
+    result = [url]
+    while args_copy[i]
+      unless args_copy[i].empty?
+        if args_copy[i].class == Array
+          result = result.concat(args_copy[i])
+        else
+          result = result.concat([args_copy[i]])
+        end
+      end
+      i+= 1
+    end
+    result
   end
 
   # Get paths from location maps.

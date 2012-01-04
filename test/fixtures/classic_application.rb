@@ -13,11 +13,13 @@ end
 map :root,  "blog"   # root_path    => /blog/
 map :about           # about_path   => /blog/about
 
-mapping :posts   => "articles",         # posts_path   => /blog/articles
-        :archive => "archive/articles", # archive_path => /blog/archive/articles
-        :search  => "find-articles",    # search_path  => /blog/find-articles
-        :drafts  => "unpublished",      # drafts_path  => /blog/unpublished
-        :profile => "users/:user_id"    # profile_path  => /user/:user_id
+mapping :posts    => "articles",         # posts_path    => /blog/articles
+        :archive  => "archive/articles", # archive_path  => /blog/archive/articles
+        :search   => "find-articles",    # search_path   => /blog/find-articles
+        :drafts   => "unpublished",      # drafts_path   => /blog/unpublished
+        :profile  => "users/:user_id",    # profile_path  => /blog/users/:user_id
+        :user_post => "users/:user_id/:post_id",    # profile_path  => /blog/users/:user_id/:post_id
+        :named_user_post => "named_users/:user_id/:post_id"    # profile_path  => /blog/users/:user_id/:post_id
 
 before do
   @date = Date.today
@@ -64,6 +66,18 @@ end
 
 get profile_path do |user_id|
   <<-end_content.gsub(/^    /,'')
-    "Im user number #{user_id}"
+    Im user number #{user_id}
+  end_content
+end
+
+get user_post_path do |user_id, post_id|
+  <<-end_content.gsub(/^    /,'')
+    Im post number #{post_id} from user number #{user_id}
+  end_content
+end
+
+get named_user_post_path do |user_id, post_id|
+  <<-end_content.gsub(/^    /,'')
+    Im post number #{post_id} from user number #{user_id} (#{params[:name]}, #{params[:lastname]})
   end_content
 end
