@@ -9,5 +9,5 @@
 :email: email@hallisonbatista.com
 :homepage: http://sinatra-mapping.rubyforge.org/
 :dependencies:
-  sinatra: >= 0.9.1.1
+  sinatra: ">= 0.9.1.1"
 

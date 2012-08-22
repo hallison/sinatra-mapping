@@ -28,12 +28,12 @@ module Mapping
     @locations ||= {}
     if name.to_sym == :root
       @locations[:root] = cleanup_paths("/#{path}/")
-      metadef "#{name}_path" do |*paths|
+      define_method "#{name}_path" do |*paths|
         cleanup_paths("/#{@locations[:root]}/?")
       end
     else
       @locations[name.to_sym] = cleanup_paths(path || name.to_s)
-      metadef "#{name}_path" do |*paths|
+      define_method "#{name}_path" do |*paths|
         map_path_to(@locations[name.to_sym], *paths << "/?")
       end
     end
