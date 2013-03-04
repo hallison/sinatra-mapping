@@ -1,3 +1,5 @@
+require 'yaml'
+
 @version  = YAML.load_file("VERSION")
 @info     = YAML.load_file("INFO")
 @manifest = `git ls-files`.split.sort.reject{ |out| out =~ /^\./ || out =~ /^doc/ }
