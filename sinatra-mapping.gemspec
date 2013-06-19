@@ -1,3 +1,5 @@
+require 'yaml'
+
 @version  = YAML.load_file("VERSION")
 @info     = YAML.load_file("INFO")
 @manifest = `git ls-files`.split.sort.reject{ |out| out =~ /^\./ || out =~ /^doc/ }
@@ -14,6 +16,10 @@
     gemspec.add_dependency name, version
   end
 
+  @info[:development_dependencies].each do |name, version|
+    gemspec.add_development_dependency name, version
+  end
+
   gemspec.require_paths = %w[lib]
   gemspec.files = @manifest
   gemspec.test_files = gemspec.files.select{ |path| path =~ /^test\/test_.*.rb/ }
@@ -25,4 +31,5 @@
   gemspec.rubyforge_project = gemspec.name
   gemspec.rubygems_version = "1.3.3"
 end if @version || @info # Gem::Specification
+
 
