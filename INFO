@@ -10,4 +10,5 @@
 :homepage: http://sinatra-mapping.rubyforge.org/
 :dependencies:
   sinatra: ~> 1.3
-
+:development_dependencies:
+  rack-test: ~> 0.6
