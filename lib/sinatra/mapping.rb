@@ -125,11 +125,19 @@ private
     result = [url]
     while args_copy[i]
       unless args_copy[i].empty?
+
         if args_copy[i].class == Array
-          result = result.concat(args_copy[i])
+          value = args_copy[i]
         else
-          result = result.concat([args_copy[i]])
+          value = [args_copy[i]]
         end
+
+        if args_copy[i] != '/?' && url =~ /\*/
+          url.sub!("*", value.join(''))
+        else
+          result.concat(value)
+        end
+
       end
       i+= 1
     end
@@ -153,7 +161,7 @@ private
 
   # Copyright (c) 2009 Hallison Batista
   #
-  # This module contains several helper methods for paths written using 
+  # This module contains several helper methods for paths written using
   # +map+ method.
   module Helpers
 

@@ -16,6 +16,10 @@ require 'yaml'
     gemspec.add_dependency name, version
   end
 
+  @info[:development_dependencies].each do |name, version|
+    gemspec.add_development_dependency name, version
+  end
+
   gemspec.require_paths = %w[lib]
   gemspec.files = @manifest
   gemspec.test_files = gemspec.files.select{ |path| path =~ /^test\/test_.*.rb/ }
