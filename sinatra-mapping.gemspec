@@ -1,3 +1,5 @@
+require 'yaml'
+
 @version  = YAML.load_file("VERSION")
 @info     = YAML.load_file("INFO")
 @manifest = `git ls-files`.split.sort.reject{ |out| out =~ /^\./ || out =~ /^doc/ }
@@ -25,4 +27,5 @@
   gemspec.rubyforge_project = gemspec.name
   gemspec.rubygems_version = "1.3.3"
 end if @version || @info # Gem::Specification
+
 

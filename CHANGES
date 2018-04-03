@@ -1,5 +1,8 @@
 = Changes
 
+[1.3.0 - 2011-01-03]
+  * Updated to work with sinatra-1.3.1 and ruby-1.9.2
+
 [1.2.0 - 2009-09-22]
   * The mapping methods works in classic application.
   * Updates in documentation.

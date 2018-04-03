@@ -28,13 +28,17 @@ module Mapping
     @locations ||= {}
     if name.to_sym == :root
       @locations[:root] = cleanup_paths("/#{path}/")
-      metadef "#{name}_path" do |*paths|
-        cleanup_paths("/#{@locations[:root]}/?")
+      self.class.class_eval do
+        define_method "#{name}_path" do |*paths|
+          cleanup_paths("/#{@locations[:root]}/?")
+        end
       end
     else
       @locations[name.to_sym] = cleanup_paths(path || name.to_s)
-      metadef "#{name}_path" do |*paths|
-        map_path_to(@locations[name.to_sym], *paths << "/?")
+      self.class.class_eval do
+        define_method("#{name}_path") do |*paths|
+          map_path_to(@locations[name.to_sym], paths << "/?")
+        end
       end
     end
     Delegator.delegate "#{name}_path"
@@ -95,7 +99,41 @@ private
   # Returns all paths mapped by root path in prefix.
   def path_mapped(script_name, *args)
     return cleanup_paths("/#{script_name}/#{@locations[:root]}") if args.empty?
-    cleanup_paths("/#{script_name}/#{@locations[:root]}/#{args.join('/')}")
+    a = replace_symbols(script_name, *args)
+    cleanup_paths("/#{script_name}/#{@locations[:root]}/#{a.join('/')}")
+  end
+
+
+  # Replace simbols in url for
+  def replace_symbols(script_name, *args)
+    args_new = []
+    args_copy = args.clone
+
+    url = args[0].clone
+    modifiers = args_copy[1]
+    if modifiers.class == Hash
+      modifiers.delete_if do |key, value|
+        delete = url.include? (":" + key.to_s)
+        if delete
+          url.sub!( (":" + key.to_s), value.to_s )
+        end
+        delete
+      end
+    end
+
+    i = 1
+    result = [url]
+    while args_copy[i]
+      unless args_copy[i].empty?
+        if args_copy[i].class == Array
+          result = result.concat(args_copy[i])
+        else
+          result = result.concat([args_copy[i]])
+        end
+      end
+      i+= 1
+    end
+    result
   end
 
   # Get paths from location maps.
@@ -139,7 +177,7 @@ private
     #   <%=title_path :archive%>
     #   #=> "Archive articles"
     def title_path(path, *args)
-      title = (options.locations[path] || path).to_s.gsub('/',' ').strip
+      title = (settings.locations[path] || path).to_s.gsub('/',' ').strip
       title.gsub!(/\W/,' ') # Cleanup
       (args.empty? ? title : "#{title} #{args.join(' ')}").strip.capitalize
     end
@@ -171,7 +209,7 @@ private
       options = args.last.kind_of?(Hash) ? args.pop : {}
       url     = args.shift if args.first.to_s =~ /^\w.*?:/
       args   << extract_query_attributes(options)
-      "<a href=\"#{url || path_to(*args)}\"#{extract_link_attributes(options)}>#{name || url}</a>"
+      "<a href=\"#{url || path_to(*args)}\"#{extract_link_attributes(options).join()}>#{name || url}</a>"
     end
 
     # Returns all paths with query parameters. Example:

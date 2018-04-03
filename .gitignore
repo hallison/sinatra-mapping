@@ -4,4 +4,4 @@ test.*
 doc/*
 pkg/*
 tmp/*
-
+.idea/
